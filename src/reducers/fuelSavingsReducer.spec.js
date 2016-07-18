@@ -57,8 +57,8 @@ describe('Reducers::FuelSavings', () => {
     expect(reducer(getAppState(), action)).to.deep.equal(expected);
   });
 
-  it('should handle CALCULATE_FUEL_SAVINGS', () => {
-    const action = { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: getAppState(), fieldName: 'newMpg', value: 30 };
+  it('should handle CHANGE_USERNAME', () => {
+    const action = { type: ActionTypes.CHANGE_USERNAME, settings: getAppState(), fieldName: 'newMpg', value: 30 };
 
     const expectedMpg = 30;
     const expectedSavings = { monthly: '$43.33', annual: '$519.96', threeYear: '$1,559.88' };

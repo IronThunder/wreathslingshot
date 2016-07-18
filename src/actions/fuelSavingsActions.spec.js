@@ -35,7 +35,7 @@ describe('Actions', () => {
     const value = 100;
 
     const expected = {
-      type: ActionTypes.CALCULATE_FUEL_SAVINGS,
+      type: ActionTypes.CHANGE_USERNAME,
       settings: appState,
       fieldName,
       value

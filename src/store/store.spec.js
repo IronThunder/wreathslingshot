@@ -11,12 +11,12 @@ describe('Store', () => {
     const store = createStore(rootReducer, initialState);
 
     const actions = [
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'newMpg', value: 20 },
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'tradeMpg', value: 10 },
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'newPpg', value: 1.50 },
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'tradePpg', value: 1.50 },
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'milesDriven', value: 100 },
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'milesDrivenTimeframe', value: 'month' }
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'newMpg', value: 20 },
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'tradeMpg', value: 10 },
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'newPpg', value: 1.50 },
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'tradePpg', value: 1.50 },
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'milesDriven', value: 100 },
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'milesDrivenTimeframe', value: 'month' }
     ];
     actions.forEach(action => store.dispatch(action));
 
@@ -41,12 +41,12 @@ describe('Store', () => {
     const store = createStore(rootReducer, initialState);
 
     const actions = [
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'newMpg', value: 20 },
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'tradeMpg', value: 10 },
-      // { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'newPpg', value: 1.50 },
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'tradePpg', value: 1.50 },
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'milesDriven', value: 100 },
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'milesDrivenTimeframe', value: 'month' }
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'newMpg', value: 20 },
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'tradeMpg', value: 10 },
+      // { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'newPpg', value: 1.50 },
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'tradePpg', value: 1.50 },
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'milesDriven', value: 100 },
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'milesDrivenTimeframe', value: 'month' }
     ];
 
     actions.forEach(action => store.dispatch(action));
@@ -75,31 +75,31 @@ describe('Store', () => {
     const store = createStore(rootReducer, initialState);
 
     const actions = [
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'newMpg', value: 20 },
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'tradeMpg', value: 10 },
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'newPpg', value: 1.50 },
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'tradePpg', value: 1.50 },
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'milesDriven', value: 100 },
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'milesDrivenTimeframe', value: 'month' },
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'newMpg', value: 20 },
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'tradeMpg', value: 10 },
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'newPpg', value: 1.50 },
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'newMpg', value: 20 },
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'tradeMpg', value: 10 },
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'newPpg', value: 1.50 },
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'tradePpg', value: 1.50 },
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'milesDriven', value: 100 },
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'milesDrivenTimeframe', value: 'month' },
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'newMpg', value: 20 },
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'tradeMpg', value: 10 },
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'newPpg', value: 1.50 },
       { type: ActionTypes.SAVE_FUEL_SAVINGS, settings: store.getState() },
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'tradePpg', value: 1.50 },
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'milesDriven', value: 100 },
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'milesDrivenTimeframe', value: 'week' },
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'newMpg', value: 20 },
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'tradeMpg', value: 10 },
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'newPpg', value: 1.50 }
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'tradePpg', value: 1.50 },
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'milesDriven', value: 100 },
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'milesDrivenTimeframe', value: 'week' },
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'newMpg', value: 20 },
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'tradeMpg', value: 10 },
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'newPpg', value: 1.50 }
     ];
     actions.forEach(action => store.dispatch(action));
 
     const lastGoodSavings = calculator().calculateSavings(store.getState().fuelSavings);
 
     const moreActions = [
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'tradePpg', value: 0 },
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'milesDriven', value: 100 },
-      { type: ActionTypes.CALCULATE_FUEL_SAVINGS, settings: store.getState(), fieldName: 'milesDrivenTimeframe', value: 'year' }
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'tradePpg', value: 0 },
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'milesDriven', value: 100 },
+      { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'milesDrivenTimeframe', value: 'year' }
     ];
 
     // actions.push(...moreActions);

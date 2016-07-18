@@ -1,4 +1,4 @@
-import {SAVE_FUEL_SAVINGS, CALCULATE_FUEL_SAVINGS} from '../constants/actionTypes';
+import {SAVE_FUEL_SAVINGS, CHANGE_USERNAME} from '../constants/actionTypes';
 import calculator from '../utils/fuelSavingsCalculator';
 import dateHelper from '../utils/dateHelper';
 import objectAssign from 'object-assign';
@@ -18,16 +18,9 @@ export default function fuelSavingsReducer(state = initialState.fuelSavings, act
       // In a real app using Redux, you might use redux-thunk and handle the async call in fuelSavingsActions.js
       return objectAssign({}, state, {dateModified: dateHelper.getFormattedDateTime(new Date())});
 
-    case CALCULATE_FUEL_SAVINGS:
+    case CHANGE_USERNAME:
       newState = objectAssign({}, state);
-      newState[action.fieldName] = action.value;
-      newState.necessaryDataIsProvidedToCalculateSavings = calculator().necessaryDataIsProvidedToCalculateSavings(newState);
-      newState.dateModified = dateHelper.getFormattedDateTime(new Date());
-
-      if (newState.necessaryDataIsProvidedToCalculateSavings) {
-        newState.savings = calculator().calculateSavings(newState);
-      }
-
+      newState['username'] = action.value;
       return newState;
 
     default:
