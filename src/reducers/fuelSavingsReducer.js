@@ -1,5 +1,4 @@
-import {SAVE_FUEL_SAVINGS, CHANGE_USERNAME} from '../constants/actionTypes';
-import calculator from '../utils/fuelSavingsCalculator';
+import {SAVE_FUEL_SAVINGS, CHANGE_USERNAME, CHANGE_DATA} from '../constants/actionTypes';
 import dateHelper from '../utils/dateHelper';
 import objectAssign from 'object-assign';
 import initialState from './initialState';
@@ -22,6 +21,16 @@ export default function fuelSavingsReducer(state = initialState.fuelSavings, act
       newState = objectAssign({}, state);
       newState['username'] = action.value;
       return newState;
+
+    case CHANGE_DATA:
+      newState = objectAssign({}, state);
+      for (let i = 0; i < newState.newScout.sales.length; i++) {
+        if (newState.newScout.sales[i].type == action.name) {
+          newState.newScout.sales[i].num = action.value;
+        }
+      }
+      return newState;
+
 
     default:
       return state;

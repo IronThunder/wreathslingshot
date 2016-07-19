@@ -7,3 +7,7 @@ export function saveFuelSavings(settings) {
 export function calculateFuelSavings(settings, fieldName, value) {
   return {type: types.CHANGE_USERNAME, settings, fieldName, value};
 }
+
+export function changeData(name, value) {
+  return {type: types.CHANGE_DATA, name, value};
+}

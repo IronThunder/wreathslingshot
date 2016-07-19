@@ -5,20 +5,25 @@ import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actions from '../actions/fuelSavingsActions';
+import EditPageTable from '../components/EditPageTable';
 
-export const EditPage = (props) => {
+const EditPage = (props) => {
   return (
-    <div>Hello world!</div>
+    <EditPageTable
+      newScout={props.newScout}
+      changeData={props.actions.changeData}
+    />
   );
 };
 
 EditPage.propTypes = {
-  name: PropTypes.string.isRequired
+  newScout: PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
   return {
-    name: state.fuelSavings.newScout.name
+    newScout: state.fuelSavings.newScout
   };
 }
 function mapDispatchToProps(dispatch) {

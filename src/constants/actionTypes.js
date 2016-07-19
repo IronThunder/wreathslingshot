@@ -1,2 +1,3 @@
 export const SAVE_FUEL_SAVINGS = 'SAVE_FUEL_SAVINGS';
 export const CHANGE_USERNAME = 'CHANGE_USERNAME';
+export const CHANGE_DATA = 'CHANGE_DATA';
