@@ -10,7 +10,7 @@ const App = (props) => {
       {' | '}
       <Link to="/about">About</Link>
       {' | '}
-      <Link to="/edit">Edit/Add Scout[s]</Link>
+      <Link to="/edit">Add Scout[s]</Link>
       <br/>
       {props.children}
     </div>

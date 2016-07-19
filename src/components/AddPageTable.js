@@ -5,8 +5,9 @@ import React, {PropTypes} from 'react';
 import NumberEntryInput from '../components/NumberEntryInput';
 import NameEntryInput from '../components/NameEntryInput'
 import AddNewCustomerButton from '../components/AddNewCustomerButton'
+import RemoveButton from '../components/RemoveButton'
 
-class EditPageTable extends React.Component {
+class AddPageTable extends React.Component {
 
   constructor(props, context) {
     super(props, context);
@@ -14,6 +15,11 @@ class EditPageTable extends React.Component {
     this.changeDataKeypress = this.changeDataKeypress.bind(this);
     this.changeCustomerNameKeypress = this.changeCustomerNameKeypress.bind(this);
     this.addCustomerButton = this.addCustomerButton.bind(this)
+    this.removeCustomerButton = this.removeCustomerButton.bind(this)
+  }
+
+  removeCustomerButton (key) {
+    this.props.removeCustomer(key)
   }
 
   changeDataKeypress (name, value) {
@@ -33,11 +39,13 @@ class EditPageTable extends React.Component {
     const newScout = appData.newScout
     const sales = newScout.sales
 
+    const self = this
+
     return (
       <div>
         <table>
           <thead>
-            <tr><th>Customer</th>{appData.types.map(type => (<th key={"header-" + type}>{type}</th>))}<th/></tr>
+            <tr><th>Customer</th>{appData.types.map(type => (<th key={"header-" + type}>{type}</th>))}<th>Action</th></tr>
           </thead>
           <tbody>
             {Object.keys(sales).map(saleKey => (<tr key={saleKey}><td>{saleKey}</td>{appData.types.map(type => {
@@ -48,7 +56,7 @@ class EditPageTable extends React.Component {
                 }
               }
               return (<td key={type}>0</td>)
-            })}<td/></tr>))}
+            })}<td><RemoveButton name={saleKey} onPress={self.removeCustomerButton}/></td></tr>))}
             <tr>
               <td><NameEntryInput onChange={this.changeCustomerNameKeypress}/></td>
               {appData.types.map(type => (<td key={type}><NumberEntryInput
@@ -65,12 +73,13 @@ class EditPageTable extends React.Component {
 
 }
 
-EditPageTable.propTypes = {
+AddPageTable.propTypes = {
   appData: PropTypes.object.isRequired,
   changeData: PropTypes.func.isRequired,
   changeNewCustomer: PropTypes.func.isRequired,
-  addCustomer: PropTypes.func.isRequired
+  addCustomer: PropTypes.func.isRequired,
+  removeCustomer: PropTypes.func.isRequired
 };
 
-export default EditPageTable;
+export default AddPageTable;
 
