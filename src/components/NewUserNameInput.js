@@ -1,13 +1,16 @@
+/**
+ * Created by Duncan on 7/18/2016.
+ */
 import React, {PropTypes} from 'react';
 
-const FuelSavingsTextInput = (props) => {
+const NewUsernameInput = (props) => {
   const handleChange = (e) => {
-    props.onChange(props.name, e.target.value);
+    props.onChange(e.target.value);
   };
 
   return (
     <input
-      className="small"
+      className="new_user"
       type="text"
       placeholder={props.placeholder}
       value={props.value}
@@ -15,8 +18,7 @@ const FuelSavingsTextInput = (props) => {
   );
 };
 
-FuelSavingsTextInput.propTypes = {
-  name: PropTypes.string.isRequired,
+NewUsernameInput.propTypes = {
   onChange: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
   value: PropTypes.oneOfType([
@@ -25,4 +27,4 @@ FuelSavingsTextInput.propTypes = {
   ])
 };
 
-export default FuelSavingsTextInput;
+export default NewUsernameInput;

@@ -3,11 +3,11 @@ import {shallow} from 'enzyme';
 import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import FuelSavingsTextInput from './FuelSavingsTextInput';
+import ScoutViewTextInput from './ScoutViewTextInput';
 
 chai.use(sinonChai);
 
-describe('<FuelSavingsTextInput />', () => {
+describe('<ScoutViewTextInput />', () => {
   it('should be an input element', () => {
     const props = {
       name: 'testName',
@@ -16,7 +16,7 @@ describe('<FuelSavingsTextInput />', () => {
       value: 100
     };
 
-    const wrapper = shallow(<FuelSavingsTextInput {...props} />);
+    const wrapper = shallow(<ScoutViewTextInput {...props} />);
 
     const actual = wrapper.type();
     const expected = 'input';
@@ -32,7 +32,7 @@ describe('<FuelSavingsTextInput />', () => {
       value: 100
     };
 
-    const wrapper = shallow(<FuelSavingsTextInput {...props} />);
+    const wrapper = shallow(<ScoutViewTextInput {...props} />);
 
     const actual = wrapper.type();
     const expected = 'input';

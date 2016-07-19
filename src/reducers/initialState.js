@@ -1,5 +1,5 @@
 export default {
-  fuelSavings: {
+  appData: {
     newMpg: '',
     tradeMpg: '',
     newPpg: '',
@@ -14,11 +14,15 @@ export default {
       annual: 0,
       threeYear: 0
     },
-    newScout: {name: 'ns', sales: [{type: 'Small', num: -1}, {type: 'Medium', num: -1}]},
+    types: ['Small', 'Medium'],
+    newScout: {name: 'New Scout Name', sales: {}},
+    newCustomer: {name: '', products: []},
     username: 'Duncan Vogel',
     scouts: {
-      'Duncan Vogel': {sales: [{type: 'Small', num: 3}, {type: 'Medium', num: 2}]},
-      'default': {sales: []}
+      'Duncan Vogel': {sales:
+          {'Jane Smith': {products: [{type: 'Small', num: 3}, {type: 'Medium', num: 2}]},
+            'John Smith': {products: [{type: 'Small', num: 8}, {type: 'Medium', num: 9}]}}},
+      'default': {sales: {}}
     }
   }
 };

@@ -9,8 +9,6 @@ const NumberEntryInput = (props) => {
     props.onChange(props.type, e.target.value);
   };
 
-
-
   return (
     <input
       className="small"
@@ -26,8 +24,8 @@ const NumberEntryInput = (props) => {
 NumberEntryInput.propTypes = {
   type: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  placeholder: PropTypes.string,
-  value: PropTypes.number.isRequired
+  placeholder: PropTypes.number,
+  value: PropTypes.number
 };
 
 export default NumberEntryInput;

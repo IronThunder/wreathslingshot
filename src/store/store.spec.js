@@ -31,10 +31,10 @@ describe('Store', () => {
       displayResults: false,
       dateModified: dateHelper.getFormattedDateTime(new Date()),
       necessaryDataIsProvidedToCalculateSavings: true,
-      savings: calculator().calculateSavings(store.getState().fuelSavings)
+      savings: calculator().calculateSavings(store.getState().appData)
     };
 
-    expect(actual.fuelSavings).to.deep.equal(expected);
+    expect(actual.appData).to.deep.equal(expected);
   });
 
   it('should not display results when necessary data is not provided', () => {
@@ -67,7 +67,7 @@ describe('Store', () => {
     };
 
 
-    expect(actual.fuelSavings).to.deep.equal(expected);
+    expect(actual.appData).to.deep.equal(expected);
   });
 
 
@@ -94,7 +94,7 @@ describe('Store', () => {
     ];
     actions.forEach(action => store.dispatch(action));
 
-    const lastGoodSavings = calculator().calculateSavings(store.getState().fuelSavings);
+    const lastGoodSavings = calculator().calculateSavings(store.getState().appData);
 
     const moreActions = [
       { type: ActionTypes.CHANGE_USERNAME, settings: store.getState(), fieldName: 'tradePpg', value: 0 },
@@ -119,6 +119,6 @@ describe('Store', () => {
       savings: lastGoodSavings
     };
 
-    expect(actual.fuelSavings).to.deep.equal(expected);
+    expect(actual.appData).to.deep.equal(expected);
   });
 });

@@ -2,15 +2,15 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import {expect} from 'chai';
 import sinon from 'sinon';
-import FuelSavingsForm from './FuelSavingsForm';
-import FuelSavingsTextInput from './FuelSavingsTextInput';
+import ScoutViewForm from './ScoutViewForm';
+import ScoutViewTextInput from './ScoutViewTextInput';
 import FuelSavingsResults from './FuelSavingsResults';
 
-describe('<FuelSavingsForm />', () => {
-  it('should contain <FuelSavingsTextInput /> components', () => {
+describe('<ScoutViewForm />', () => {
+  it('should contain <ScoutViewTextInput /> components', () => {
     const saveFuelSavings = () => {};
     const calculateFuelSavings = () => {};
-    const fuelSavings = {
+    const appData = {
       newMpg: 20,
       tradeMpg: 10,
       newPpg: 1.50,
@@ -27,30 +27,30 @@ describe('<FuelSavingsForm />', () => {
       }
     };
 
-    const wrapper = shallow(<FuelSavingsForm
+    const wrapper = shallow(<ScoutViewForm
       saveFuelSavings={saveFuelSavings}
       calculateFuelSavings={calculateFuelSavings}
-      fuelSavings={fuelSavings}
+      appData={appData}
     />);
-    const allInputs = wrapper.find(FuelSavingsTextInput);
+    const allInputs = wrapper.find(ScoutViewTextInput);
 
     expect(allInputs).to.be.length(5);
     expect(allInputs.at(0).props().name).to.equal('newMpg');
-    expect(allInputs.at(0).props().value).to.equal(fuelSavings.newMpg);
+    expect(allInputs.at(0).props().value).to.equal(appData.newMpg);
     expect(allInputs.at(1).props().name).to.equal('tradeMpg');
-    expect(allInputs.at(1).props().value).to.equal(fuelSavings.tradeMpg);
+    expect(allInputs.at(1).props().value).to.equal(appData.tradeMpg);
     expect(allInputs.at(2).props().name).to.equal('newPpg');
-    expect(allInputs.at(2).props().value).to.equal(fuelSavings.newPpg);
+    expect(allInputs.at(2).props().value).to.equal(appData.newPpg);
     expect(allInputs.at(3).props().name).to.equal('tradePpg');
-    expect(allInputs.at(3).props().value).to.equal(fuelSavings.tradePpg);
+    expect(allInputs.at(3).props().value).to.equal(appData.tradePpg);
     expect(allInputs.at(4).props().name).to.equal('milesDriven');
-    expect(allInputs.at(4).props().value).to.equal(fuelSavings.milesDriven);
+    expect(allInputs.at(4).props().value).to.equal(appData.milesDriven);
   });
 
   it('should contain options to change miles driven timeframe', () => {
     const saveFuelSavings = () => {};
     const calculateFuelSavings = () => {};
-    const fuelSavings = {
+    const appData = {
       newMpg: 20,
       tradeMpg: 10,
       newPpg: 1.50,
@@ -67,10 +67,10 @@ describe('<FuelSavingsForm />', () => {
       }
     };
 
-    const wrapper = shallow(<FuelSavingsForm
+    const wrapper = shallow(<ScoutViewForm
       saveFuelSavings={saveFuelSavings}
       calculateFuelSavings={calculateFuelSavings}
-      fuelSavings={fuelSavings}
+      appData={appData}
     />);
     const expectedOption1 = '<option value="week">Week</option>';
     const expectedOption2 = '<option value="month">Month</option>';
@@ -84,7 +84,7 @@ describe('<FuelSavingsForm />', () => {
   it('should contain <FuelSavingsResults /> when necessary conditions are met', () => {
     const saveFuelSavings = () => {};
     const calculateFuelSavings = () => {};
-    const fuelSavings = {
+    const appData = {
       newMpg: 20,
       tradeMpg: 10,
       newPpg: 1.50,
@@ -101,12 +101,12 @@ describe('<FuelSavingsForm />', () => {
       }
     };
 
-    const wrapper = shallow(<FuelSavingsForm
+    const wrapper = shallow(<ScoutViewForm
       saveFuelSavings={saveFuelSavings}
       calculateFuelSavings={calculateFuelSavings}
-      fuelSavings={fuelSavings}
+      appData={appData}
     />);
-    const expected = <FuelSavingsResults savings={fuelSavings.savings}/>;
+    const expected = <FuelSavingsResults savings={appData.savings}/>;
 
     expect(wrapper.contains(expected)).to.be.true;
   });
@@ -114,7 +114,7 @@ describe('<FuelSavingsForm />', () => {
   it('should not contain <FuelSavingsResults /> when necessary conditions are not met', () => {
     const saveFuelSavings = () => {};
     const calculateFuelSavings = () => {};
-    const fuelSavings = {
+    const appData = {
       newMpg: 20,
       tradeMpg: 10,
       newPpg: 1.50,
@@ -131,12 +131,12 @@ describe('<FuelSavingsForm />', () => {
       }
     };
 
-    const wrapper = shallow(<FuelSavingsForm
+    const wrapper = shallow(<ScoutViewForm
       saveFuelSavings={saveFuelSavings}
       calculateFuelSavings={calculateFuelSavings}
-      fuelSavings={fuelSavings}
+      appData={appData}
     />);
-    const expected = <FuelSavingsResults savings={fuelSavings.savings}/>;
+    const expected = <FuelSavingsResults savings={appData.savings}/>;
 
     expect(wrapper.contains(expected)).to.be.false;
   });
@@ -144,7 +144,7 @@ describe('<FuelSavingsForm />', () => {
   it('should handle form submit', () => {
     const saveFuelSavings = sinon.spy();
     const calculateFuelSavings = () => {};
-    const fuelSavings = {
+    const appData = {
       newMpg: 20,
       tradeMpg: 10,
       newPpg: 1.50,
@@ -161,10 +161,10 @@ describe('<FuelSavingsForm />', () => {
       }
     };
 
-    const wrapper = shallow(<FuelSavingsForm
+    const wrapper = shallow(<ScoutViewForm
       saveFuelSavings={saveFuelSavings}
       calculateFuelSavings={calculateFuelSavings}
-      fuelSavings={fuelSavings}
+      appData={appData}
     />);
 
     expect(saveFuelSavings.calledOnce).to.be.false;
@@ -175,7 +175,7 @@ describe('<FuelSavingsForm />', () => {
   it('should submit appState', () => {
     const saveFuelSavings = sinon.spy();
     const calculateFuelSavings = () => {};
-    const fuelSavings = {
+    const appData = {
       newMpg: 20,
       tradeMpg: 10,
       newPpg: 1.50,
@@ -192,21 +192,21 @@ describe('<FuelSavingsForm />', () => {
       }
     };
 
-    const wrapper = shallow(<FuelSavingsForm
+    const wrapper = shallow(<ScoutViewForm
       saveFuelSavings={saveFuelSavings}
       calculateFuelSavings={calculateFuelSavings}
-      fuelSavings={fuelSavings}
+      appData={appData}
     />);
 
     wrapper.find('input[type="submit"]').simulate('click');
-    expect(saveFuelSavings.args[0][0]).to.equal(fuelSavings);
+    expect(saveFuelSavings.args[0][0]).to.equal(appData);
   });
 
 
   it('should calculate fuel savings on text input change', () => {
     const saveFuelSavings = () => {};
     const calculateFuelSavings = sinon.spy();
-    const fuelSavings = {
+    const appData = {
       newMpg: 20,
       tradeMpg: 10,
       newPpg: 1.50,
@@ -223,21 +223,21 @@ describe('<FuelSavingsForm />', () => {
       }
     };
 
-    const wrapper = shallow(<FuelSavingsForm
+    const wrapper = shallow(<ScoutViewForm
       saveFuelSavings={saveFuelSavings}
       calculateFuelSavings={calculateFuelSavings}
-      fuelSavings={fuelSavings}
+      appData={appData}
     />);
 
     expect(calculateFuelSavings.calledOnce).to.be.false;
-    wrapper.find(FuelSavingsTextInput).first().simulate('change');
+    wrapper.find(ScoutViewTextInput).first().simulate('change');
     expect(calculateFuelSavings.calledOnce).to.be.true;
   });
 
   it('should calculate fuel savings on miles driven timeframe change', () => {
     const saveFuelSavings = () => {};
     const calculateFuelSavings = sinon.spy();
-    const fuelSavings = {
+    const appData = {
       newMpg: 20,
       tradeMpg: 10,
       newPpg: 1.50,
@@ -254,10 +254,10 @@ describe('<FuelSavingsForm />', () => {
       }
     };
 
-    const wrapper = shallow(<FuelSavingsForm
+    const wrapper = shallow(<ScoutViewForm
       saveFuelSavings={saveFuelSavings}
       calculateFuelSavings={calculateFuelSavings}
-      fuelSavings={fuelSavings}
+      appData={appData}
     />);
 
     expect(calculateFuelSavings.calledOnce).to.be.false;

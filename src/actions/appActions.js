@@ -11,3 +11,19 @@ export function calculateFuelSavings(settings, fieldName, value) {
 export function changeData(name, value) {
   return {type: types.CHANGE_DATA, name, value};
 }
+
+export function changeNewUser(name) {
+  return {type: types.CHANGE_NEW_USER, name};
+}
+
+export function submitNewScout() {
+  return {type: types.SUBMIT_NEW_USER}
+}
+
+export function addCustomer() {
+  return {type: types.ADD_CUSTOMER}
+}
+
+export function changeNewCustomer(name) {
+  return {type: types.CHANGE_CUSTOMER_NAME, name}
+}
