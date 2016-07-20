@@ -12,9 +12,9 @@ const NameEntryInput = (props) => {
 
   return (
     <input
-      className="newCustomerName"
+      className="new_customer_name"
       type="text"
-      placeholder="New Customer Name"
+      placeholder={props.placeholder || "New Customer Name"}
       value={props.value}
       onChange={handleChange}/>
   )
@@ -23,7 +23,8 @@ const NameEntryInput = (props) => {
 
 NameEntryInput.propTypes = {
   onChange: PropTypes.func.isRequired,
-  value: PropTypes.string
+  value: PropTypes.string,
+  placeholder: PropTypes.string
 }
 
 export default NameEntryInput

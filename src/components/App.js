@@ -8,9 +8,9 @@ const App = (props) => {
       {' | '}
       <Link to="/fuel-savings">Scout Viewer</Link>
       {' | '}
-      <Link to="/about">About</Link>
-      {' | '}
       <Link to="/edit">Add Scout[s]</Link>
+      {' | '}
+      <Link to="/customers">All Customers</Link>
       <br/>
       {props.children}
     </div>

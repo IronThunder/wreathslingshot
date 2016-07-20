@@ -7,6 +7,7 @@ import ScoutViewPage from './containers/ScoutViewPage'; // eslint-disable-line i
 import AboutPage from './components/AboutPage.js';
 import NotFoundPage from './components/NotFoundPage.js';
 import AddPage from './containers/AddPage.js'
+import CustomerViewPage from './containers/CustomerViewPage'
 
 export default (
   <Route path="/" component={App}>
@@ -14,6 +15,7 @@ export default (
     <Route path="fuel-savings" component={ScoutViewPage}/>
     <Route path="about" component={AboutPage}/>
     <Route path="edit" component={AddPage}/>
+    <Route path="customers" component={CustomerViewPage}/>
     <Route path="*" component={NotFoundPage}/>
   </Route>
 );

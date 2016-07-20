@@ -1,9 +1,5 @@
 import * as types from '../constants/actionTypes';
 
-export function saveFuelSavings(settings) {
-  return {type: types.SAVE_FUEL_SAVINGS, settings};
-}
-
 export function calculateFuelSavings(settings, fieldName, value) {
   return {type: types.CHANGE_USERNAME, settings, fieldName, value};
 }
@@ -26,4 +22,16 @@ export function addCustomer() {
 
 export function changeNewCustomer(name) {
   return {type: types.CHANGE_CUSTOMER_NAME, name}
+}
+
+export function removeCustomer(key) {
+  return {type: types.REMOVE_CUSTOMER, key}
+}
+
+export function changeStaticCustomerData(key, name) {
+  return {type: types.CHANGE_STATIC_CUSTOMER_DATA, key, name}
+}
+
+export function addNewStaticCustomer() {
+  return {type: types.ADD_NEW_STATIC_CUSTOMER}
 }

@@ -39,7 +39,23 @@ class AddPageTable extends React.Component {
     const newScout = appData.newScout
     const sales = newScout.sales
 
-    const self = this
+    const findSaleNum = (type) => {
+      for (let i = 0; i < appData.newCustomer.products.length; i++){
+        if (appData.newCustomer.products[i].type == type){
+          return appData.newCustomer.products[i].num
+        }
+      }
+      return 0
+    }
+
+    const findName = () => {
+      if (appData.newCustomer.name === ''){
+        return undefined
+      }
+      else {
+        return appData.newCustomer.name
+      }
+    }
 
     return (
       <div>
@@ -56,9 +72,9 @@ class AddPageTable extends React.Component {
                 }
               }
               return (<td key={type}>0</td>)
-            })}<td><RemoveButton name={saleKey} onPress={self.removeCustomerButton}/></td></tr>))}
+            })}<td><RemoveButton name={saleKey} onPress={this.removeCustomerButton}/></td></tr>))}
             <tr>
-              <td><NameEntryInput onChange={this.changeCustomerNameKeypress}/></td>
+              <td><NameEntryInput placeholder={findName()} onChange={this.changeCustomerNameKeypress}/></td>
               {appData.types.map(type => (<td key={type}><NumberEntryInput
                 type={type}
                 placeholder={0}

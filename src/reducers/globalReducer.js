@@ -1,5 +1,14 @@
-import {SAVE_FUEL_SAVINGS, CHANGE_USERNAME, CHANGE_DATA, CHANGE_NEW_USER, SUBMIT_NEW_USER, ADD_CUSTOMER, CHANGE_CUSTOMER_NAME} from '../constants/actionTypes';
-import dateHelper from '../utils/dateHelper';
+import {
+  CHANGE_USERNAME,
+  CHANGE_DATA,
+  CHANGE_NEW_USER,
+  SUBMIT_NEW_USER,
+  ADD_CUSTOMER,
+  CHANGE_CUSTOMER_NAME,
+  REMOVE_CUSTOMER,
+  CHANGE_STATIC_CUSTOMER_DATA,
+  ADD_NEW_STATIC_CUSTOMER
+} from '../constants/actionTypes';
 import objectAssign from 'object-assign';
 import initialState from './initialState';
 
@@ -9,17 +18,40 @@ import initialState from './initialState';
 // Note that I'm using Object.assign to create a copy of current state
 // and update values on the copy.
 
+const findUses = (state, name) => {
+  let result = 0
+  console.log(state.scouts)
+  for (let i = 0; i < Object.keys(state.scouts).length; i++){
+    for (let x = 0; x < Object.keys(state.scouts[Object.keys(state.scouts)[i]].sales).length; x++){
+      if (Object.keys(state.scouts[Object.keys(state.scouts)[i]].sales)[x] === name) {
+        result++
+      }
+    }
+  }
+  return result
+}
+
 const copy = (obj) => {
   if (obj === null || typeof obj !== 'object') {
     return obj;
   }
 
-  var temp = obj.constructor(); // give temp the original obj's constructor
-  for (var key in obj) {
+  let temp = obj.constructor(); // give temp the original obj's constructor
+  for (let key in obj) {
     temp[key] = copy(obj[key]);
   }
 
   return temp;
+}
+
+const remove = (array, key) => {
+  let newArray = copy(array)
+  for (let i = 0; i < newArray.length; i++){
+    if (newArray[i]['Customer Name'] === key){
+      newArray.splice(i, 1)
+    }
+  }
+  return newArray
 }
 
 export default function globalReducer(state = initialState.appData, action) {
@@ -28,19 +60,17 @@ export default function globalReducer(state = initialState.appData, action) {
   let newProducts
 
   switch (action.type) {
-    case SAVE_FUEL_SAVINGS:
-      // For this example, just simulating a save by changing date modified.
-      // In a real app using Redux, you might use redux-thunk and handle the async call in appActions.js
-      return objectAssign({}, state, {dateModified: dateHelper.getFormattedDateTime(new Date())});
-
+    //Reducers for viewing scouts
     case CHANGE_USERNAME:
       newState = objectAssign({}, state);
       newState['username'] = action.value;
       return newState;
 
+    //-------------------------------------------------------
+    //-------------------------------------------------------
+    //Reducers for changing or adding scouts
     case CHANGE_DATA:
       newState = objectAssign({}, state);
-      console.log("Changing data")
       change = false
       for (let i = 0; i < newState.newCustomer.products.length; i++) {
         if (newState.newCustomer.products[i].type == action.name) {
@@ -66,15 +96,35 @@ export default function globalReducer(state = initialState.appData, action) {
     case ADD_CUSTOMER:
       newState = objectAssign({}, state)
       newProducts = copy(newState.newCustomer.products)
-      newState.newScout.sales = objectAssign({}, newState.newScout.sales, {[newState.newCustomer.name]: {products: newProducts}})
+      newState.newScout.sales = objectAssign({}, newState.newScout.sales, {['' + newState.newCustomer.name]: {products: newProducts}})
       newState.newCustomer = initialState.appData.newCustomer
+      return newState
+
+    case REMOVE_CUSTOMER:
+      newState = objectAssign({}, state)
+      delete newState.newScout.sales[action.key]
       return newState
 
     case SUBMIT_NEW_USER:
       newState = objectAssign({}, state);
-      newState.scouts = objectAssign({}, newState.scouts, {[newState.newScout.name]: {sales: newState.newScout.sales}})
+      newState.scouts = objectAssign({}, newState.scouts, {['' + newState.newScout.name]: {sales: copy(newState.newScout.sales)}})
       newState.newScout = initialState.appData.newScout;
       return newState;
+
+    //-------------------------------------------------------
+    //-------------------------------------------------------
+    //Reducers for changing or adding customers
+    case CHANGE_STATIC_CUSTOMER_DATA:
+      newState = objectAssign({}, state)
+      newState.newStaticCustomer[action.key] = action.name
+      return newState
+
+    case ADD_NEW_STATIC_CUSTOMER:
+      newState = objectAssign({}, state)
+      newState.customers = remove(newState.customers, newState.newStaticCustomer['Customer Name'])
+      newState.customers.splice(0, 0, objectAssign({}, newState.newStaticCustomer, {uses: findUses(newState, newState.newStaticCustomer['Customer Name'])}))
+      newState.newStaticCustomer = copy(initialState.appData.newStaticCustomer)
+      return newState
 
     default:
       return state;

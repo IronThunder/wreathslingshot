@@ -51,7 +51,6 @@ class ScoutViewForm extends React.Component {
 }
 
 ScoutViewForm.propTypes = {
-  saveFuelSavings: PropTypes.func.isRequired,
   calculateFuelSavings: PropTypes.func.isRequired,
   appData: PropTypes.object.isRequired
 };
