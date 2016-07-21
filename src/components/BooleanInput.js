@@ -3,7 +3,7 @@
  */
 import React, {PropTypes} from 'react';
 
-const ChangeNewCustomerDataBoolean = (props) => {
+const BooleanInput = (props) => {
 
   const handleChangeTrue = (e) => {
     props.onChange(props.index, true)
@@ -19,7 +19,7 @@ const ChangeNewCustomerDataBoolean = (props) => {
         name={props.name || 'inputBool'}
         type="radio"
         onClick={handleChangeTrue}
-      />T
+      />T<br/>
       <input
         name={props.name || 'inputBool'}
         type="radio"
@@ -30,10 +30,10 @@ const ChangeNewCustomerDataBoolean = (props) => {
 
 }
 
-ChangeNewCustomerDataBoolean.propTypes = {
+BooleanInput.propTypes = {
   onChange: PropTypes.func.isRequired,
   index: PropTypes.string.isRequired,
   name: PropTypes.string
 }
 
-export default ChangeNewCustomerDataBoolean
+export default BooleanInput

@@ -2,10 +2,12 @@
  * Created by Duncan on 7/18/2016.
  */
 import React, {PropTypes} from 'react';
+import {Link} from 'react-router';
 import NumberEntryInput from '../components/NumberEntryInput';
 import NameEntryInput from '../components/NameEntryInput'
 import AddNewCustomerButton from '../components/AddNewCustomerButton'
 import RemoveButton from '../components/RemoveButton'
+import BooleanInput from '../components/BooleanInput'
 
 class AddPageTable extends React.Component {
 
@@ -57,14 +59,70 @@ class AddPageTable extends React.Component {
       }
     }
 
+    const textOrLink = (state, name) => {
+      let result
+      state.customers.map(customer => {
+        if (customer['Customer Name'] === name){
+          result = '' + name
+        }
+      })
+      return result || <div>{name} <div><Link to="/customers">Add customer</Link></div></div>
+    }
+
+    const chooseColor = (state, name) => {
+      let bgcolor = 'pink'
+      let txtcolor = 'black'
+      state.customers.map(customer => {
+        if (customer['Customer Name'] === name && customer.uses < 1){
+          bgcolor = 'white'
+          txtcolor = 'black'
+        }
+        else if (customer['Customer Name'] === name) {
+          bgcolor = 'red'
+          txtcolor = 'white'
+        }
+      })
+      return {bg: bgcolor, txt: txtcolor}
+    }
+
+    const inputType = (name, onAction) => {
+      if (name.substring(name.length-1, name.length) === '?'){
+        return (<BooleanInput index={name} onChange={onAction}/>)
+      }
+      else {
+        return (<NameEntryInput placeholder="Value" onChange={onAction}/>)
+      }
+    }
+
+    const display = (component) => {
+      if (typeof component === 'undefined' || component == null){
+        return 'Unknown'
+      }
+      else if (typeof component === 'boolean'){
+        return displayBool(component)
+      }
+      else {
+        return component
+      }
+    }
+
+    const displayBool = (bool) => {
+      if (bool) {
+        return "Yes"
+      }
+      else {
+        return "No"
+      }
+    }
+
     return (
       <div>
         <table>
           <thead>
-            <tr><th>Customer</th>{appData.types.map(type => (<th key={"header-" + type}>{type}</th>))}<th>Action</th></tr>
+            <tr><th>Customer</th>{appData.types.map(type => (<th key={"header-" + type}>{type}</th>))}{appData.pTypes.map(type => (<th key={"header-" + type}>{type}</th>))}<th>Action</th></tr>
           </thead>
           <tbody>
-            {Object.keys(sales).map(saleKey => (<tr key={saleKey}><td>{saleKey}</td>{appData.types.map(type => {
+            {Object.keys(sales).map(saleKey => (<tr key={saleKey} style={{'backgroundColor': chooseColor(appData, saleKey).bg, 'color': chooseColor(appData, saleKey).txt}}><td>{textOrLink(appData, saleKey)}</td>{appData.types.map(type => {
               const products = sales[saleKey].products;
               for (let i = 0; i < products.length; i++){
                 if (products[i].type == type) {
@@ -72,13 +130,18 @@ class AddPageTable extends React.Component {
                 }
               }
               return (<td key={type}>0</td>)
-            })}<td><RemoveButton name={saleKey} onPress={this.removeCustomerButton}/></td></tr>))}
+            })}
+              {appData.pTypes.map(propKey => {
+                return (<td key={propKey}>{display(sales[saleKey].properties[propKey])}</td>)
+              })}
+              <td><RemoveButton name={saleKey} onPress={this.removeCustomerButton}/></td></tr>))}
             <tr>
               <td><NameEntryInput placeholder={findName()} onChange={this.changeCustomerNameKeypress}/></td>
               {appData.types.map(type => (<td key={type}><NumberEntryInput
                 type={type}
                 placeholder={0}
                 onChange={this.changeDataKeypress}/></td>))}
+              {appData.pTypes.map(type => (<td key={type}>{inputType(type, this.props.changeCustomerProperty)}</td>))}
               <td><AddNewCustomerButton onPress={this.addCustomerButton}/></td>
             </tr>
           </tbody>
@@ -94,7 +157,8 @@ AddPageTable.propTypes = {
   changeData: PropTypes.func.isRequired,
   changeNewCustomer: PropTypes.func.isRequired,
   addCustomer: PropTypes.func.isRequired,
-  removeCustomer: PropTypes.func.isRequired
+  removeCustomer: PropTypes.func.isRequired,
+  changeCustomerProperty: PropTypes.func.isRequired
 };
 
 export default AddPageTable;

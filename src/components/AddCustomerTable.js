@@ -3,7 +3,7 @@
  */
 import React, {PropTypes} from 'react';
 import ChangeNewCustomerData from './ChangeNewCustomerData'
-import ChangeNewCustomerDataBoolean from './ChangeNewCustomerDataBoolean'
+import BooleanInput from './BooleanInput'
 import AddNewCustomerButton from './AddNewCustomerButton'
 
 
@@ -28,7 +28,7 @@ class AddCustomerTable extends React.Component {
 
     const chooseType = (field) => {
       if (field.substring(field.length-1, field.length) === '?'){
-        return (<ChangeNewCustomerDataBoolean index={field} onChange={this.onChangeStaticCustomerData}/>)
+        return (<BooleanInput index={field} onChange={this.onChangeStaticCustomerData}/>)
       }
       else {
         return (<ChangeNewCustomerData index={field} onChange={this.onChangeStaticCustomerData} placeholder={"New " + field}/>)

@@ -7,7 +7,9 @@ import {
   CHANGE_CUSTOMER_NAME,
   REMOVE_CUSTOMER,
   CHANGE_STATIC_CUSTOMER_DATA,
-  ADD_NEW_STATIC_CUSTOMER
+  ADD_NEW_STATIC_CUSTOMER,
+  GET_SCOUT_INFO,
+  CHANGE_CUSTOMER_PROPERTY
 } from '../constants/actionTypes';
 import objectAssign from 'object-assign';
 import initialState from './initialState';
@@ -20,7 +22,6 @@ import initialState from './initialState';
 
 const findUses = (state, name) => {
   let result = 0
-  console.log(state.scouts)
   for (let i = 0; i < Object.keys(state.scouts).length; i++){
     for (let x = 0; x < Object.keys(state.scouts[Object.keys(state.scouts)[i]].sales).length; x++){
       if (Object.keys(state.scouts[Object.keys(state.scouts)[i]].sales)[x] === name) {
@@ -58,6 +59,7 @@ export default function globalReducer(state = initialState.appData, action) {
   let newState;
   let change
   let newProducts
+  let newProperties
 
   switch (action.type) {
     //Reducers for viewing scouts
@@ -91,12 +93,19 @@ export default function globalReducer(state = initialState.appData, action) {
     case CHANGE_NEW_USER:
       newState = objectAssign({}, state);
       newState.newScout.name = action.name;
+      if (newState.scouts[newState.newScout.name] !== undefined){
+        newState.visible = 'visible'
+      }
+      else {
+        newState.visible = 'hidden'
+      }
       return newState;
 
     case ADD_CUSTOMER:
       newState = objectAssign({}, state)
       newProducts = copy(newState.newCustomer.products)
-      newState.newScout.sales = objectAssign({}, newState.newScout.sales, {['' + newState.newCustomer.name]: {products: newProducts}})
+      newProperties = copy(newState.newCustomer.properties)
+      newState.newScout.sales = objectAssign({}, newState.newScout.sales, {['' + newState.newCustomer.name]: {products: newProducts, properties: newProperties}})
       newState.newCustomer = initialState.appData.newCustomer
       return newState
 
@@ -108,8 +117,14 @@ export default function globalReducer(state = initialState.appData, action) {
     case SUBMIT_NEW_USER:
       newState = objectAssign({}, state);
       newState.scouts = objectAssign({}, newState.scouts, {['' + newState.newScout.name]: {sales: copy(newState.newScout.sales)}})
+      newState.customers = newState.customers.map(customer => (objectAssign({}, customer, {uses: findUses(newState, customer['Customer Name'])})))
       newState.newScout = initialState.appData.newScout;
       return newState;
+
+    case CHANGE_CUSTOMER_PROPERTY:
+      newState = objectAssign({}, state);
+      newState.newCustomer.properties[action.name] = action.value
+      return newState
 
     //-------------------------------------------------------
     //-------------------------------------------------------
@@ -124,6 +139,11 @@ export default function globalReducer(state = initialState.appData, action) {
       newState.customers = remove(newState.customers, newState.newStaticCustomer['Customer Name'])
       newState.customers.splice(0, 0, objectAssign({}, newState.newStaticCustomer, {uses: findUses(newState, newState.newStaticCustomer['Customer Name'])}))
       newState.newStaticCustomer = copy(initialState.appData.newStaticCustomer)
+      return newState
+
+    case GET_SCOUT_INFO:
+      newState = objectAssign({}, state)
+      newState.newScout = newState.scouts[action.name] || initialState.appData.newScout
       return newState
 
     default:

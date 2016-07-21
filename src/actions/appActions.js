@@ -35,3 +35,11 @@ export function changeStaticCustomerData(key, name) {
 export function addNewStaticCustomer() {
   return {type: types.ADD_NEW_STATIC_CUSTOMER}
 }
+
+export function getScoutInfo (name) {
+  return {type: types.GET_SCOUT_INFO, name}
+}
+
+export function changeCustomerProperty (name, value) {
+  return {type: types.CHANGE_CUSTOMER_PROPERTY, name, value}
+}

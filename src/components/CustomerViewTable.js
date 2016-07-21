@@ -3,6 +3,7 @@
  */
 import React, {PropTypes} from 'react';
 import AddCustomerTable from './AddCustomerTable'
+import UnusedCustomerList from './UnusedCustomerList'
 
 class CustomerViewTable extends React.Component {
   constructor (props, context) {
@@ -57,10 +58,12 @@ class CustomerViewTable extends React.Component {
             <tr>{this.props.appData.customerFields.map(field => (<th  key={field}>{field}</th>))}</tr>
           </thead>
           <tbody>
-            {this.props.appData.customers.map(customer => (<tr key={customer[fields[0]]} style={{'background-color': chooseColor(customer), 'color': 'white'}}>{fields.map(field => (<td key={field}>{display(customer[field]) || 'Unknown'}</td>))}</tr>))}
+            {this.props.appData.customers.map(customer => (<tr key={customer[fields[0]]} style={{'backgroundColor': chooseColor(customer), 'color': 'white'}}>{fields.map(field => (<td key={field}>{display(customer[field]) || 'Unknown'}</td>))}</tr>))}
           </tbody>
         </table>
-        <br/><br/><br/><br/><br/>
+        <br/><br/><br/>
+        <UnusedCustomerList appData={this.props.appData} />
+        <br/><br/>
         <AddCustomerTable changeStaticCustomerData={this.changeStaticCustomerData} appData={this.props.appData} addNewStaticCustomer={this.props.addNewStaticCustomer}/>
       </div>
     )

@@ -12,7 +12,7 @@ import CustomerViewPage from './containers/CustomerViewPage'
 export default (
   <Route path="/" component={App}>
     <IndexRoute component={HomePage}/>
-    <Route path="fuel-savings" component={ScoutViewPage}/>
+    <Route path="scout-view" component={ScoutViewPage}/>
     <Route path="about" component={AboutPage}/>
     <Route path="edit" component={AddPage}/>
     <Route path="customers" component={CustomerViewPage}/>
