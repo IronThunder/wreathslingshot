@@ -13,6 +13,7 @@ import {
 } from '../constants/actionTypes';
 import objectAssign from 'object-assign';
 import initialState from './initialState';
+import helperFunctions from '../utils/helperFunctions'
 
 // IMPORTANT: Note that with Redux, state should NEVER be changed.
 // State is considered immutable. Instead,
@@ -20,33 +21,8 @@ import initialState from './initialState';
 // Note that I'm using Object.assign to create a copy of current state
 // and update values on the copy.
 
-const findUses = (state, name) => {
-  let result = 0
-  for (let i = 0; i < Object.keys(state.scouts).length; i++){
-    for (let x = 0; x < Object.keys(state.scouts[Object.keys(state.scouts)[i]].sales).length; x++){
-      if (Object.keys(state.scouts[Object.keys(state.scouts)[i]].sales)[x] === name) {
-        result++
-      }
-    }
-  }
-  return result
-}
-
-const copy = (obj) => {
-  if (obj === null || typeof obj !== 'object') {
-    return obj;
-  }
-
-  let temp = obj.constructor(); // give temp the original obj's constructor
-  for (let key in obj) {
-    temp[key] = copy(obj[key]);
-  }
-
-  return temp;
-}
-
 const remove = (array, key) => {
-  let newArray = copy(array)
+  let newArray = helperFunctions.copy(array)
   for (let i = 0; i < newArray.length; i++){
     if (newArray[i]['Customer Name'] === key){
       newArray.splice(i, 1)
@@ -55,7 +31,8 @@ const remove = (array, key) => {
   return newArray
 }
 
-export default function globalReducer(state = initialState.appData, action) {
+
+export default function globalReducer(state = helperFunctions.copy(initialState.appData), action) {
   let newState;
   let change
   let newProducts
@@ -76,7 +53,7 @@ export default function globalReducer(state = initialState.appData, action) {
       change = false
       for (let i = 0; i < newState.newCustomer.products.length; i++) {
         if (newState.newCustomer.products[i].type == action.name) {
-          newState.newCustomer.products[i].num = action.value;
+          newState.newCustomer.products[i].num = parseInt(action.value);
           change = true
         }
       }
@@ -103,10 +80,11 @@ export default function globalReducer(state = initialState.appData, action) {
 
     case ADD_CUSTOMER:
       newState = objectAssign({}, state)
-      newProducts = copy(newState.newCustomer.products)
-      newProperties = copy(newState.newCustomer.properties)
+      newProducts = helperFunctions.copy(newState.newCustomer.products)
+      newProperties = helperFunctions.copy(newState.newCustomer.properties)
       newState.newScout.sales = objectAssign({}, newState.newScout.sales, {['' + newState.newCustomer.name]: {products: newProducts, properties: newProperties}})
-      newState.newCustomer = initialState.appData.newCustomer
+      newState.newCustomer = helperFunctions.copy(initialState.appData.newCustomer)
+      newState.newCustomer.products = helperFunctions.generateInitialProducts(Object.keys(newState.types))
       return newState
 
     case REMOVE_CUSTOMER:
@@ -116,9 +94,8 @@ export default function globalReducer(state = initialState.appData, action) {
 
     case SUBMIT_NEW_USER:
       newState = objectAssign({}, state);
-      newState.scouts = objectAssign({}, newState.scouts, {['' + newState.newScout.name]: {sales: copy(newState.newScout.sales)}})
-      newState.customers = newState.customers.map(customer => (objectAssign({}, customer, {uses: findUses(newState, customer['Customer Name'])})))
-      newState.newScout = initialState.appData.newScout;
+      newState.scouts = objectAssign({}, newState.scouts, {['' + newState.newScout.name]: {sales: helperFunctions.copy(newState.newScout.sales)}})
+      newState.newScout = helperFunctions.copy(initialState.appData.newScout);
       return newState;
 
     case CHANGE_CUSTOMER_PROPERTY:
@@ -137,13 +114,13 @@ export default function globalReducer(state = initialState.appData, action) {
     case ADD_NEW_STATIC_CUSTOMER:
       newState = objectAssign({}, state)
       newState.customers = remove(newState.customers, newState.newStaticCustomer['Customer Name'])
-      newState.customers.splice(0, 0, objectAssign({}, newState.newStaticCustomer, {uses: findUses(newState, newState.newStaticCustomer['Customer Name'])}))
-      newState.newStaticCustomer = copy(initialState.appData.newStaticCustomer)
+      newState.customers.splice(0, 0, objectAssign({}, newState.newStaticCustomer))
+      newState.newStaticCustomer = helperFunctions.copy(initialState.appData.newStaticCustomer)
       return newState
 
     case GET_SCOUT_INFO:
       newState = objectAssign({}, state)
-      newState.newScout = newState.scouts[action.name] || initialState.appData.newScout
+      newState.newScout = objectAssign({}, newState.scouts[action.name], {name: action.name}) || helperFunctions.copy(initialState.appData.newScout)
       return newState
 
     default:

@@ -4,7 +4,7 @@
 import React, {PropTypes} from 'react'
 
 const EditButton = (props) => {
-  const handleChange = (e) => {
+  const handleChange = () => {
     props.onPress(props.name)
   }
 

@@ -8,6 +8,7 @@ import NameEntryInput from '../components/NameEntryInput'
 import AddNewCustomerButton from '../components/AddNewCustomerButton'
 import RemoveButton from '../components/RemoveButton'
 import BooleanInput from '../components/BooleanInput'
+import helperFunctions from '../utils/helperFunctions'
 
 class AddPageTable extends React.Component {
 
@@ -73,7 +74,7 @@ class AddPageTable extends React.Component {
       let bgcolor = 'pink'
       let txtcolor = 'black'
       state.customers.map(customer => {
-        if (customer['Customer Name'] === name && customer.uses < 1){
+        if (customer['Customer Name'] === name && helperFunctions.findUses(state, customer['Customer Name']) < 1){
           bgcolor = 'white'
           txtcolor = 'black'
         }
@@ -107,22 +108,17 @@ class AddPageTable extends React.Component {
     }
 
     const displayBool = (bool) => {
-      if (bool) {
-        return "Yes"
-      }
-      else {
-        return "No"
-      }
+      return (bool) ? 'Yes' : 'No'
     }
 
     return (
       <div>
         <table>
           <thead>
-            <tr><th>Customer</th>{appData.types.map(type => (<th key={"header-" + type}>{type}</th>))}{appData.pTypes.map(type => (<th key={"header-" + type}>{type}</th>))}<th>Action</th></tr>
+            <tr><th>Customer</th>{Object.keys(appData.types).map(type => (<th key={"header-" + type}>{type}</th>))}{appData.pTypes.map(type => (<th key={"header-" + type}>{type}</th>))}<th>Action</th></tr>
           </thead>
           <tbody>
-            {Object.keys(sales).map(saleKey => (<tr key={saleKey} style={{'backgroundColor': chooseColor(appData, saleKey).bg, 'color': chooseColor(appData, saleKey).txt}}><td>{textOrLink(appData, saleKey)}</td>{appData.types.map(type => {
+            {Object.keys(sales).map(saleKey => (<tr key={saleKey} style={{'backgroundColor': chooseColor(appData, saleKey).bg, 'color': chooseColor(appData, saleKey).txt}}><td>{textOrLink(appData, saleKey)}</td>{Object.keys(appData.types).map(type => {
               const products = sales[saleKey].products;
               for (let i = 0; i < products.length; i++){
                 if (products[i].type == type) {
@@ -136,10 +132,10 @@ class AddPageTable extends React.Component {
               })}
               <td><RemoveButton name={saleKey} onPress={this.removeCustomerButton}/></td></tr>))}
             <tr>
-              <td><NameEntryInput placeholder={findName()} onChange={this.changeCustomerNameKeypress}/></td>
-              {appData.types.map(type => (<td key={type}><NumberEntryInput
+              <td><NameEntryInput value={findName()} onChange={this.changeCustomerNameKeypress}/></td>
+              {Object.keys(appData.types).map(type => (<td key={type}><NumberEntryInput
                 type={type}
-                placeholder={0}
+                value={parseInt(helperFunctions.getProduct(this.props.appData.newCustomer.products, type).num)}
                 onChange={this.changeDataKeypress}/></td>))}
               {appData.pTypes.map(type => (<td key={type}>{inputType(type, this.props.changeCustomerProperty)}</td>))}
               <td><AddNewCustomerButton onPress={this.addCustomerButton}/></td>

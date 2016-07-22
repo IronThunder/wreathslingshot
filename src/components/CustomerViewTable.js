@@ -4,6 +4,7 @@
 import React, {PropTypes} from 'react';
 import AddCustomerTable from './AddCustomerTable'
 import UnusedCustomerList from './UnusedCustomerList'
+import helperFunctions from '../utils/helperFunctions'
 
 class CustomerViewTable extends React.Component {
   constructor (props, context) {
@@ -38,10 +39,11 @@ class CustomerViewTable extends React.Component {
     }
 
     const chooseColor = (customer) => {
-      if (customer.uses < 1){
+      let uses = helperFunctions.findUses(this.props.appData, customer['Customer Name'])
+      if (uses < 1){
         return 'green'
       }
-      else if (customer.uses === 1) {
+      else if (uses === 1) {
         return 'blue'
       }
       else {

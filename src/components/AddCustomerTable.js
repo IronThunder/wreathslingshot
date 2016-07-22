@@ -31,7 +31,7 @@ class AddCustomerTable extends React.Component {
         return (<BooleanInput index={field} onChange={this.onChangeStaticCustomerData}/>)
       }
       else {
-        return (<ChangeNewCustomerData index={field} onChange={this.onChangeStaticCustomerData} placeholder={"New " + field}/>)
+        return (<ChangeNewCustomerData index={field} onChange={this.onChangeStaticCustomerData} value={this.props.appData.newStaticCustomer[field]}/>)
       }
     }
 

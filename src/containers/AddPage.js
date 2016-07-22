@@ -15,7 +15,7 @@ const AddPage = (props) => {
     <div>
       <label>Name of new scout: </label><NewUsernameInput
         onChange={props.actions.changeNewUser}
-        placeholder={props.appData.newScout.name}
+        value={props.appData.newScout.name}
       />
       <EditScoutButton onPress={props.actions.getScoutInfo} visible={props.appData.visible} name={props.appData.newScout.name}/>
       <br/><br/>

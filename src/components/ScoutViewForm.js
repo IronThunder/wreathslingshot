@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react';
 import ScoutViewTextInput from './ScoutViewTextInput';
 import './../styles/ScoutViewForm.css';
+import helperFunctions from '../utils/helperFunctions'
 
 class ScoutViewForm extends React.Component {
   constructor(props, context) {
@@ -27,7 +28,7 @@ class ScoutViewForm extends React.Component {
       let bgcolor = 'purple'
       let txtcolor = 'white'
       state.customers.map(customer => {
-        if (customer['Customer Name'] === name && customer.uses < 2){
+        if (customer['Customer Name'] === name && helperFunctions.findUses(state, customer['Customer Name']) < 2){
           bgcolor = 'white'
           txtcolor = 'black'
         }
@@ -68,12 +69,12 @@ class ScoutViewForm extends React.Component {
         <h2>Sales Information for {user}</h2>
         <table className="table">
           <thead>
-            <tr><th>Customer</th>{appData.types.map(type => (<th key={"header-" + type}>{type}</th>))}{appData.pTypes.map(type => (<th key={"header-" + type}>{type}</th>))}</tr>
+            <tr><th>Customer</th>{Object.keys(appData.types).map(type => (<th key={"header-" + type}>{type}</th>))}{appData.pTypes.map(type => (<th key={"header-" + type}>{type}</th>))}<th>Amount Owed</th></tr>
           </thead>
           <tbody>
             {Object.keys(sales).map(saleKey => (
               <tr key={saleKey} >
-                <td style={{'backgroundColor': chooseColor(appData, saleKey).bg, 'color': chooseColor(appData, saleKey).txt}}>{saleKey}</td>{appData.types.map(type => {
+                <td style={{'backgroundColor': chooseColor(appData, saleKey).bg, 'color': chooseColor(appData, saleKey).txt}}>{saleKey}</td>{Object.keys(appData.types).map(type => {
                 const products = sales[saleKey].products;
                 for (let i = 0; i < products.length; i++){
                   if (products[i].type == type) {
@@ -85,7 +86,18 @@ class ScoutViewForm extends React.Component {
                 {appData.pTypes.map(propKey => {
                   return (<td key={propKey}>{display(sales[saleKey].properties[propKey])}</td>)
                 })}
+                <td>{'$' + (helperFunctions.customerValue(appData, user, saleKey)).toFixed(2)}</td>
               </tr>))}
+          <tr>
+            <td style={{'backgroundColor': 'grey', 'color':'white'}}><b>Total Sold</b></td>{Object.keys(appData.types).map(type => (<td key={type}>{helperFunctions.numProduct(appData.scouts[user], type)}</td>))}
+            {appData.pTypes.map(propKey => (<td key={propKey}/>))}
+            <td/>
+          </tr>
+          <tr>
+            <td style={{'backgroundColor': 'grey', 'color':'white'}}><b>Total Value</b></td>{Object.keys(appData.types).map(type => (<td key={type}>{'$' + (helperFunctions.numProduct(appData.scouts[user], type)*appData.types[type]).toFixed(2)}</td>))}
+            {appData.pTypes.map(propKey => (<td key={propKey}/>))}
+            <td>{'$' + helperFunctions.scoutValue(appData, user).toFixed(2)}</td>
+          </tr>
           </tbody>
         </table>
       </div>
