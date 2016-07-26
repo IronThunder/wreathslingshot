@@ -6,7 +6,10 @@ import {createStore, compose} from 'redux';
 import rootReducer from '../reducers';
 
 export default function configureStore(initialState) {
-  const store = createStore(rootReducer, initialState, compose(
+
+  let firstState = JSON.parse(window.localStorage.getItem('appData')) || initialState
+
+  const store = createStore(rootReducer, {appData: firstState}, compose(
     // Add other middleware on this line...
     window.devToolsExtension ? window.devToolsExtension() : f => f // add support for Redux dev tools
     )

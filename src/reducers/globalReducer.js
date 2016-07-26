@@ -96,6 +96,7 @@ export default function globalReducer(state = helperFunctions.copy(initialState.
       newState = objectAssign({}, state);
       newState.scouts = objectAssign({}, newState.scouts, {['' + newState.newScout.name]: {sales: helperFunctions.copy(newState.newScout.sales)}})
       newState.newScout = helperFunctions.copy(initialState.appData.newScout);
+      window.localStorage.setItem('appData', JSON.stringify(newState))
       return newState;
 
     case CHANGE_CUSTOMER_PROPERTY:
@@ -116,6 +117,7 @@ export default function globalReducer(state = helperFunctions.copy(initialState.
       newState.customers = remove(newState.customers, newState.newStaticCustomer['Customer Name'])
       newState.customers.splice(0, 0, objectAssign({}, newState.newStaticCustomer))
       newState.newStaticCustomer = helperFunctions.copy(initialState.appData.newStaticCustomer)
+      window.localStorage.setItem('appData', JSON.stringify(newState))
       return newState
 
     case GET_SCOUT_INFO:
