@@ -1,19 +1,23 @@
 export default {
   appData: {
-    newMpg: '',
-    tradeMpg: '',
-    newPpg: '',
-    tradePpg: '',
-    milesDriven: '',
-    milesDrivenTimeframe: 'week',
-    displayResults: false,
-    dateModified: null,
-    necessaryDataIsProvidedToCalculateSavings: false,
-    savings: {
-      monthly: 0,
-      annual: 0,
-      threeYear: 0
+
+    customerFetch: {
+      isFetching: false,
+      items: []
     },
+
+    scoutFetch: {
+      isFetching: false,
+      items: []
+    },
+
+    sheetFetch: {
+      isFetching: false,
+      items: []
+    },
+
+    
+    scoutList: [{name: "Duncan Vogel", id: 1}],
     types: {'Small': 20.00, 'Medium': 40.00},
     pTypes: ['Paid?', 'Delivered?'],
     newScout: {name: 'New Scout Name', sales: {}},
