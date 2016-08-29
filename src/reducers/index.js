@@ -5,7 +5,6 @@ import {routerReducer} from 'react-router-redux';
 
 const rootReducer = combineReducers({
   appData,
-  customers,
   routing: routerReducer
 });
 

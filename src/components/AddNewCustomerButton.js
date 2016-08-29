@@ -4,7 +4,7 @@
 import React, {PropTypes} from 'react'
 
 const AddNewCustomerButton = (props) => {
-  const handleChange = (e) => {
+  const handleChange = () => {
     props.onPress()
   }
   

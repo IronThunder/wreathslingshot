@@ -2,17 +2,21 @@
 // This boilerplate file is likely to be the same for each project that uses Redux.
 // With Redux, the actual stores are in /reducers.
 
-import {createStore, compose} from 'redux';
+import {createStore, compose, applyMiddleware} from 'redux';
 import thunkMiddleware from 'redux-thunk';
+import {
+  postCustomer,
+  postScout,
+  postLeads
+} from '../middleware/isomorphicPost'
 import rootReducer from '../reducers';
 
 export default function configureStore(initialState) {
 
-  let firstState = JSON.parse(window.localStorage.getItem('appData')) || initialState
+  let firstState =  initialState
 
   const store = createStore(rootReducer, {appData: firstState}, compose(
-    // Add other middleware on this line...
-    thunkMiddleware,
+    applyMiddleware(postCustomer, postScout, postLeads),
     window.devToolsExtension ? window.devToolsExtension() : f => f // add support for Redux dev tools
     )
   );

@@ -1,12 +1,20 @@
 import * as types from '../constants/actionTypes';
-import fetch from 'isomorphic-fetch';
+// import fetch from 'isomorphic-fetch';
 
-export function calculateFuelSavings(settings, fieldName, value) {
+export function changeUsername(settings, fieldName, value) {
   return {type: types.CHANGE_USERNAME, settings, fieldName, value};
+}
+
+export function changeYear(value) {
+  return {type: types.CHANGE_YEAR, value}
 }
 
 export function changeData(name, value) {
   return {type: types.CHANGE_DATA, name, value};
+}
+
+export function changeSheetEntry(custName, key, value) {
+  return {type: types.CHANGE_SHEET_ENTRY, custName, key, value}
 }
 
 export function changeNewUser(name) {
@@ -45,117 +53,142 @@ export function changeCustomerProperty (name, value) {
   return {type: types.CHANGE_CUSTOMER_PROPERTY, name, value}
 }
 
+export function addLead (custID, scoutID) {
+  return {type: types.ADD_LEAD, custID, scoutID}
+}
+
 /////////////////Asynchronous Customer Actions//////////////////////////////////
 
-export function requestCustomers (ids) {
-  return {type: types.REQUEST_CUSTOMERS, ids}
+export function requestCustomerPost () {
+  return {type: types.REQUEST_CUSTOMER_POST}
+}
+
+export function customerPostResult (success, error) {
+  return {type: types.CUSTOMER_POST_RESULT, success, error}
+}
+
+export function resetNewCustomer () {
+  return {type: types.RESET_NEW_STATIC_CUSTOMER}
 }
 
 export function receiveCustomers (json) {
   return {
     type: types.RECEIVE_CUSTOMERS,
-    customers: json.data.children.map(child => child.data),
+    customers: json,
     receivedAt: Date.now()
   }
 }
+// /////////////////Asynchronous Scout Actions//////////////////////////////////
 
-export function fetchCustomers (ids) {
-  return dispatch => {
-    dispatch(requestCustomers(ids))
-    return fetch(`powerful-sea-27631.herokuapp.com/customers/subset?ids=${ids.map(id => ('' + id + ','))}`)
-      .then(response => response.json())
-      .then(json => dispatch(receiveCustomers(json)))
-  }
+export function requestScoutPost () {
+  return {type: types.REQUEST_SCOUT_POST}
 }
 
-function shouldFetchCustomers (state, ids) {
-  const customers = state.customers
-  let result = false
-  for (let i = 0; i < ids.length; i++) {
-    let found = true
-    customers.map(cust => {found = (cust.id === ids[i])})
-    result = !found
-  }
+export function scoutPostResult (success, error) {
+  return {type: types.SCOUT_POST_RESULT, success, error}
 }
 
-export function fetchCustomersIfNeeded (ids) {
-  return (dispatch, getState) => {
-    if (shouldFetchCustomers(getState(), ids)) {
-      return dispatch(fetchCustomers(ids))
-    }
-  }
-}
-
-/////////////////Asynchronous Scout Actions//////////////////////////////////
-
-export function requestScout (id) {
-  return {type: types.REQUEST_SCOUT, id}
-}
-
-export function receiveScout (json) {
+export function receiveScouts (json) {
   return {
     type: types.RECEIVE_SCOUT,
-    scout: json.data.children.map(child => child.data)[0],
+    scouts: json,
     receivedAt: Date.now()
   }
 }
 
-export function fetchScout (id) {
-  return dispatch => {
-    dispatch(requestScout(id))
-    return fetch(`powerful-sea-27631.herokuapp.com/customers/subset?ids=${ids}`)
-      .then(response => response.json())
-      .then(json => dispatch(receiveScout(json)))
-  }
+export function requestLeadPost () {
+  return {type: types.REQUEST_LEAD_POST}
 }
 
-function shouldFetchScout (state, id) {
-  const scout = state.scoutList[id]
-  return !scout
-
+export function leadPostResult (success, error) {
+  return {type: types.LEAD_POST_RESULT, success, error}
 }
 
-export function fetchScoutIfNeeded (id) {
-  return (dispatch, getState) => {
-    if (shouldFetchScout(getState(), id)) {
-      return dispatch(fetchScout(id))
-    }
-  }
+// /////////////////Asynchronous Sheet Actions//////////////////////////////////
+
+export function requestSheetPost () {
+  return {type: types.REQUEST_SHEET_POST}
 }
 
-/////////////////Asynchronous Sheet Actions//////////////////////////////////
-
-export function requestSalesheets (scoutId, year) {
-  return {type: types.REQUEST_SALESHEETS, scoutId, year}
+export function sheetPostResult (success, error) {
+  return {type: types.SHEET_POST_RESULT, success, error}
 }
 
 export function receiveSalesheets (json) {
   return {
     type: types.RECEIVE_SALESHEETS,
-    sheets: json.data.children.map(child => child.data),
+    sheets: json,
     receivedAt: Date.now()
   }
 }
 
-export function fetchSalesheets (scoutId, year) {
-  return dispatch => {
-    dispatch(requestSalesheets(scoutId, year))
-    return fetch(`powerful-sea-27631.herokuapp.com/customers/subset?scoutId=${scoutId},year=${year}`)
-      .then(response => response.json())
-      .then(json => dispatch(receiveScout(json)))
-  }
+
+/////////////////////Authentication Actions//////////////////////////////////////
+
+export function populateA0User (user) {
+  return {type: types.POPULATE_NEW_USER, user}
 }
 
-function shouldFetchScout (state, id) {
-  const scout = state.scoutList[id]
-  return !scout
-
+export function changeA0User (field, val) {
+  return {type: types.CHANGE_NEW_USER, field, val}
 }
 
-export function fetchScoutIfNeeded (id) {
-  return (dispatch, getState) => {
-    if (shouldFetchScout(getState(), id)) {
-      return dispatch(fetchScout(id))
-    }
-  }
-}
+
+// export function requestScout (id) {
+//   return {type: types.REQUEST_SCOUT, id}
+// }
+//
+
+//
+// export function fetchScout (id) {
+//   return dispatch => {
+//     dispatch(requestScout(id))
+//     return fetch(`powerful-sea-27631.herokuapp.com/customers/subset?ids=${ids}`)
+//       .then(response => response.json())
+//       .then(json => dispatch(receiveScout(json)))
+//   }
+// }
+//
+// function shouldFetchScout (state, id) {
+//   const scout = state.scoutList[id]
+//   return !scout
+//
+// }
+//
+// export function fetchScoutIfNeeded (id) {
+//   return (dispatch, getState) => {
+//     if (shouldFetchScout(getState(), id)) {
+//       return dispatch(fetchScout(id))
+//     }
+//   }
+// }
+//
+
+
+// export function requestSalesheets (scoutId, year) {
+//   return {type: types.REQUEST_SALESHEETS, scoutId, year}
+// }
+//
+//
+// export function fetchSalesheets (scoutId, year) {
+//   return dispatch => {
+//     dispatch(requestSalesheets(scoutId, year))
+//     return fetch(`powerful-sea-27631.herokuapp.com/customers/subset?scoutId=${scoutId},year=${year}`)
+//       .then(response => response.json())
+//       .then(json => dispatch(receiveScout(json)))
+//   }
+// }
+//
+// function shouldFetchScout (state, id) {
+//   const scout = state.scoutList[id]
+//   return !scout
+//
+// }
+//
+// export function fetchScoutIfNeeded (id) {
+//   return (dispatch, getState) => {
+//     if (shouldFetchScout(getState(), id)) {
+//       return dispatch(fetchScout(id))
+//     }
+//   }
+// }

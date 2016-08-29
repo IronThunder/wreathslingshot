@@ -57,10 +57,10 @@ class CustomerViewTable extends React.Component {
       <div>
         <table>
           <thead>
-            <tr>{this.props.appData.customerFields.map(field => (<th  key={field}>{field}</th>))}</tr>
+            <tr>{this.props.appData.customerFields.map(field => (<th key={field}>{field}</th>))}</tr>
           </thead>
           <tbody>
-            {this.props.appData.customers.map(customer => (<tr key={customer[fields[0]]} style={{'backgroundColor': chooseColor(customer), 'color': 'white'}}>{fields.map(field => (<td key={field}>{display(customer[field]) || 'Unknown'}</td>))}</tr>))}
+            {this.props.appData.customers.map(customer => (<tr key={customer._id + '-row'} style={{'backgroundColor': chooseColor(customer), 'color': 'white'}}>{fields.map(field => (<td key={customer._id + '-cell' + '-' + field}>{display(customer[field]) || 'Unknown'}</td>))}</tr>))}
           </tbody>
         </table>
         <br/><br/><br/>

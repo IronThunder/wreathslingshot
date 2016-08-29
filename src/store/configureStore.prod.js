@@ -3,7 +3,7 @@ import rootReducer from '../reducers';
 
 export default function configureStore(initialState) {
 
-  let firstState = JSON.parse(window.localStorage.getItem('appData')) || initialState
+  let firstState = initialState
 
   const store = createStore(rootReducer, {appData: firstState});
 

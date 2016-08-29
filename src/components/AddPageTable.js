@@ -9,6 +9,7 @@ import AddNewCustomerButton from '../components/AddNewCustomerButton'
 import RemoveButton from '../components/RemoveButton'
 import BooleanInput from '../components/BooleanInput'
 import helperFunctions from '../utils/helperFunctions'
+import AuthService from '../utils/AuthService'
 
 class AddPageTable extends React.Component {
 
@@ -19,6 +20,11 @@ class AddPageTable extends React.Component {
     this.changeCustomerNameKeypress = this.changeCustomerNameKeypress.bind(this);
     this.addCustomerButton = this.addCustomerButton.bind(this)
     this.removeCustomerButton = this.removeCustomerButton.bind(this)
+    this.changeSheetEntry = this.changeSheetEntry.bind(this)
+  }
+
+  changeSheetEntry (custName, key, value) {
+    this.props.changeSheetEntry(custName, key, value)
   }
 
   removeCustomerButton (key) {
@@ -52,12 +58,7 @@ class AddPageTable extends React.Component {
     }
 
     const findName = () => {
-      if (appData.newCustomer.name === ''){
-        return undefined
-      }
-      else {
-        return appData.newCustomer.name
-      }
+      return appData.newCustomer.name
     }
 
     const textOrLink = (state, name) => {
@@ -107,32 +108,50 @@ class AddPageTable extends React.Component {
       }
     }
 
+    const createInput = (component, custName, field) => {
+
+      const onChange = (item, value) => this.changeSheetEntry(custName, field, value)
+
+      return <NumberEntryInput placeholder="" value={helperFunctions.getProduct(appData.newScout[custName].products, field)} onChange={onChange} type=""/>
+    }
+
     const displayBool = (bool) => {
       return (bool) ? 'Yes' : 'No'
     }
 
+    if (appData.customerPost.isWaiting){
+      return (
+        <div className="loader">
+          Loading
+        </div>
+      )
+    }
     return (
       <div>
         <table>
           <thead>
-            <tr><th>Customer</th>{Object.keys(appData.types).map(type => (<th key={"header-" + type}>{type}</th>))}{appData.pTypes.map(type => (<th key={"header-" + type}>{type}</th>))}<th>Action</th></tr>
+            <tr><th>Customer</th>{appData.customerFields.map(field => (<th key={"header-" + field}>{field}</th>))}{Object.keys(appData.types).map(type => (<th key={"header-" + type}>{type}</th>))}{appData.pTypes.map(type => (<th key={"header-" + type}>{type}</th>))}<th>Action</th></tr>
           </thead>
           <tbody>
-            {Object.keys(sales).map(saleKey => (<tr key={saleKey} style={{'backgroundColor': chooseColor(appData, saleKey).bg, 'color': chooseColor(appData, saleKey).txt}}><td>{textOrLink(appData, saleKey)}</td>{Object.keys(appData.types).map(type => {
-              const products = sales[saleKey].products;
-              for (let i = 0; i < products.length; i++){
-                if (products[i].type == type) {
-                  return (<td key={type}>{products[i].num}</td>)
+            {Object.keys(sales).map(saleKey => (<tr key={saleKey} style={{'backgroundColor': chooseColor(appData, saleKey).bg, 'color': chooseColor(appData, saleKey).txt}}>
+              <td>{textOrLink(appData, saleKey)}</td>
+              {appData.customerFields.map(field => (<td key={field}>{helperFunctions.findCustomer(appData, saleKey) ? display(helperFunctions.findCustomer(appData, saleKey)[field]) : 'Unknown'}</td>))}
+              {Object.keys(appData.types).map(type => {
+                const products = sales[saleKey].products;
+                for (let i = 0; i < products.length; i++){
+                  if (products[i].type == type) {
+                    return (<td key={type}>{products[i].num}</td>)
+                  }
                 }
-              }
-              return (<td key={type}>0</td>)
+                return (<td key={type}>0</td>)
             })}
               {appData.pTypes.map(propKey => {
                 return (<td key={propKey}>{display(sales[saleKey].properties[propKey])}</td>)
               })}
               <td><RemoveButton name={saleKey} onPress={this.removeCustomerButton}/></td></tr>))}
             <tr>
-              <td><NameEntryInput value={findName()} onChange={this.changeCustomerNameKeypress}/></td>
+              <td><NameEntryInput onChange={this.changeCustomerNameKeypress}/></td>
+              {appData.customerFields.map(field => (<td key={field}>{helperFunctions.findCustomer(appData, findName()) ? display(helperFunctions.findCustomer(appData, findName())[field]) : 'Unknown'}</td>))}
               {Object.keys(appData.types).map(type => (<td key={type}><NumberEntryInput
                 type={type}
                 value={parseInt(helperFunctions.getProduct(this.props.appData.newCustomer.products, type).num)}
@@ -154,7 +173,8 @@ AddPageTable.propTypes = {
   changeNewCustomer: PropTypes.func.isRequired,
   addCustomer: PropTypes.func.isRequired,
   removeCustomer: PropTypes.func.isRequired,
-  changeCustomerProperty: PropTypes.func.isRequired
+  changeCustomerProperty: PropTypes.func.isRequired,
+  auth: PropTypes.instanceOf(AuthService)
 };
 
 export default AddPageTable;

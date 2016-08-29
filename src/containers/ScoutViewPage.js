@@ -3,14 +3,20 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actions from '../actions/appActions';
 import ScoutViewForm from '../components/ScoutViewForm';
+import LeadsList from '../components/LeadsList'
 
 export const ScoutViewPage = (props) => {
   return (
-    <ScoutViewForm
-      saveFuelSavings={props.actions.saveFuelSavings}
-      calculateFuelSavings={props.actions.calculateFuelSavings}
-      appData={props.appData}
-    />
+    <div>
+      <ScoutViewForm
+        saveFuelSavings={props.actions.saveFuelSavings}
+        changeUsername={props.actions.changeUsername}
+        changeYear={props.actions.changeYear}
+        appData={props.appData}
+      />
+      <br/><br/>
+      <LeadsList appData={props.appData} />
+    </div>
   );
 };
 

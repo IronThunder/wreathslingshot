@@ -12,8 +12,8 @@ class UnusedCustomerList extends React.Component {
 
     const getUnused = (state) => {
       let unused = []
-      Object.keys(state.scouts).map(scoutKey => {
-        Object.keys(state.scouts[scoutKey].sales).map(saleKey => {
+      Object.keys(state.sheets).map(scoutKey => {
+        Object.keys(state.sheets[scoutKey].sales).map(saleKey => {
           let found = false
           for (let i = 0; i < state.customers.length; i++){
             if (saleKey === state.customers[i]['Customer Name']){

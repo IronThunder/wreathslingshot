@@ -5,11 +5,11 @@ import React, {PropTypes} from 'react';
 
 const BooleanInput = (props) => {
 
-  const handleChangeTrue = (e) => {
+  const handleChangeTrue = () => {
     props.onChange(props.index, true)
   }
 
-  const handleChangeFalse = (e) => {
+  const handleChangeFalse = () => {
     props.onChange(props.index, false)
   }
 
