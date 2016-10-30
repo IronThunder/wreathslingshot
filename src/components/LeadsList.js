@@ -2,12 +2,15 @@
  * Created by Duncan on 8/17/2016.
  */
 import React, { PropTypes } from 'react'
+import RemoveLeadButton from './RemoveButton'
 import helperFunctions from '../utils/helperFunctions'
 
 class LeadsList extends React.Component {
   constructor(props, context) {
     super(props, context)
   }
+
+
 
   render () {
 
@@ -20,7 +23,7 @@ class LeadsList extends React.Component {
       <div>
         <b>Customer assigned as leads</b>
         <ul>
-          {helperFunctions.getLeads(appData, ids).map(element => (<li key={'lead:' + element._id}>{element['Customer Name']}</li>))}
+          {helperFunctions.getLeads(appData, ids).map(element => (<li key={'lead:' + element._id}><div>{element['Customer Name']}</div></li>))}
         </ul>
       </div>
     )

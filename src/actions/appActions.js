@@ -57,6 +57,10 @@ export function addLead (custID, scoutID) {
   return {type: types.ADD_LEAD, custID, scoutID}
 }
 
+export function removeLead (custID, scoutID) {
+  return {type: types.REMOVE_LEAD, custID, scoutID}
+}
+
 /////////////////Asynchronous Customer Actions//////////////////////////////////
 
 export function requestCustomerPost () {

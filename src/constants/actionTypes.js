@@ -13,6 +13,7 @@ export const REMOVE_CUSTOMER = 'REMOVE_CUSTOMER'
 export const GET_SCOUT_INFO = 'GET_SCOUT_INFO'
 export const CHANGE_CUSTOMER_PROPERTY = 'CHANGE_CUSTOMER_PROPERTY'
 export const ADD_LEAD = 'ADD_LEAD'
+export const REMOVE_LEAD = 'REMOVE_LEAD'
 
 //Actions for changing or adding customers
 export const CHANGE_STATIC_CUSTOMER_DATA = 'CHANGE_STATIC_CUSTOMER_DATA'

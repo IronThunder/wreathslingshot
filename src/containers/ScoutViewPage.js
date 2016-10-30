@@ -9,7 +9,6 @@ export const ScoutViewPage = (props) => {
   return (
     <div>
       <ScoutViewForm
-        saveFuelSavings={props.actions.saveFuelSavings}
         changeUsername={props.actions.changeUsername}
         changeYear={props.actions.changeYear}
         appData={props.appData}

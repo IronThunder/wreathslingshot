@@ -14,6 +14,7 @@ export const postCustomer = store => next => action => {
     store.getState().appData.customerFields.map(field => {
       form = Object.assign({}, form, {[field]: store.getState().appData.newStaticCustomer[field]})
     })
+    store.dispatch(actions.requestCustomerPost())
     fetch(url + `/customers`, {
       method: 'POST',
       body: JSON.stringify(form),
@@ -22,7 +23,6 @@ export const postCustomer = store => next => action => {
         'Authorization': 'JWT ' + jwt
       }
     })
-      .then(json => store.dispatch(actions.requestCustomerPost()))
       .then(response => {
           if (response.status >= 400){
             store.dispatch(actions.customerPostResult(false, new Error("Bad response from server")))
@@ -127,6 +127,35 @@ export const postLeads = store => next => action => {
         if (response.status >= 400){
           store.dispatch(actions.leadPostResult(false, new Error("Bad response from server")))
         } else {
+          store.dispatch(actions.leadPostResult(true, null))
+          fetch(url + `/scouts`, {headers: {'Authorization': 'JWT ' + jwt}})
+            .then(response => response.json())
+            .then(json => store.dispatch(actions.receiveScouts(json)))
+        }
+      })
+    return result
+  } else if (action.type === types.REMOVE_LEAD) {
+    console.log('Trying to delete lead')
+    const state = store.getState()
+
+    const id = action.scoutID;
+    const lead = action.custID
+    let form = {id: id, lead: lead}
+    let result = next(action)
+
+    fetch(url + `/leads/remove`, {
+      method: 'POST',
+      body: JSON.stringify(form),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(json => store.dispatch(actions.requestLeadPost()))
+      .then(response => {
+        if (response.status >= 400) {
+          store.dispatch(actions.leadPostResult(false, new Error("Bad response from server")))
+        } else {
+          console.log('status: ', response.status)
           store.dispatch(actions.leadPostResult(true, null))
           fetch(url + `/scouts`, {headers: {'Authorization': 'JWT ' + jwt}})
             .then(response => response.json())

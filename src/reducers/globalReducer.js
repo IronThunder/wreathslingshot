@@ -1,33 +1,4 @@
-import {
-  CHANGE_USERNAME,
-  CHANGE_DATA,
-  CHANGE_NEW_USER,
-  SUBMIT_NEW_USER,
-  ADD_CUSTOMER,
-  CHANGE_CUSTOMER_NAME,
-  REMOVE_CUSTOMER,
-  CHANGE_STATIC_CUSTOMER_DATA,
-  ADD_NEW_STATIC_CUSTOMER,
-  GET_SCOUT_INFO,
-  CHANGE_CUSTOMER_PROPERTY,
-  RECEIVE_CUSTOMERS,
-  REQUEST_CUSTOMER_POST,
-  CUSTOMER_POST_RESULT,
-  RESET_NEW_STATIC_CUSTOMER,
-  CHANGE_YEAR,
-  RECEIVE_SCOUT,
-  RECEIVE_SALESHEETS,
-  REQUEST_SCOUT_POST,
-  SCOUT_POST_RESULT,
-  REQUEST_SHEET_POST,
-  SHEET_POST_RESULT,
-  ADD_LEAD,
-  REQUEST_LEAD_POST,
-  LEAD_POST_RESULT,
-  CHANGE_SHEET_ENTRY,
-  POPULATE_A0_USER,
-  CHANGE_A0_USER
-} from '../constants/actionTypes';
+import * as types from '../constants/actionTypes';
 import objectAssign from 'object-assign';
 import initialState from './initialState';
 import helperFunctions from '../utils/helperFunctions'
@@ -59,12 +30,12 @@ export default function globalReducer(state = helperFunctions.copy(initialState.
   let year; let date
 
   switch (action.type) {
-    case CHANGE_USERNAME:
+    case types.CHANGE_USERNAME:
       newState = objectAssign({}, state);
       newState['username'] = action.value;
       return newState;
 
-    case CHANGE_YEAR:
+    case types.CHANGE_YEAR:
       newState = objectAssign({}, state);
       newState['year'] = action.value;
       if (helperFunctions.validateSheet(newState, newState.newScout.name, newState.year)){
@@ -78,7 +49,7 @@ export default function globalReducer(state = helperFunctions.copy(initialState.
     //-------------------------------------------------------
     //-------------------------------------------------------
     //Reducers for changing or adding scouts
-    case CHANGE_DATA:
+    case types.CHANGE_DATA:
       newState = objectAssign({}, state);
       change = false
       for (let i = 0; i < newState.newCustomer.products.length; i++) {
@@ -92,19 +63,19 @@ export default function globalReducer(state = helperFunctions.copy(initialState.
       }
       return newState;
 
-    case CHANGE_SHEET_ENTRY:
+    case types.CHANGE_SHEET_ENTRY:
       newState = objectAssign({}, state)
       products = newState.newScout.sales[action.custName].products
       if (products)
         products = helperFunctions.updateProduct(products, action.key, action.value)
       return newState
 
-    case CHANGE_CUSTOMER_NAME:
+    case types.CHANGE_CUSTOMER_NAME:
       newState = objectAssign({}, state)
       newState.newCustomer.name = action.name
       return newState
 
-    case CHANGE_NEW_USER:
+    case types.CHANGE_NEW_USER:
       newState = objectAssign({}, state);
       newState.newScout.name = action.name;
       id = helperFunctions.findCurrentSheetID(newState, action.name, newState.year)
@@ -116,7 +87,7 @@ export default function globalReducer(state = helperFunctions.copy(initialState.
       }
       return newState;
 
-    case ADD_CUSTOMER:
+    case types.ADD_CUSTOMER:
       newState = objectAssign({}, state)
       newProducts = helperFunctions.copy(newState.newCustomer.products)
       newProperties = helperFunctions.copy(newState.newCustomer.properties)
@@ -125,12 +96,12 @@ export default function globalReducer(state = helperFunctions.copy(initialState.
       newState.newCustomer.products = helperFunctions.generateInitialProducts(Object.keys(newState.types))
       return newState
 
-    case REMOVE_CUSTOMER:
+    case types.REMOVE_CUSTOMER:
       newState = objectAssign({}, state)
       delete newState.newScout.sales[action.key]
       return newState
 
-    case SUBMIT_NEW_USER:
+    case types.SUBMIT_NEW_USER:
       newState = objectAssign({}, state);
       id = helperFunctions.generateSheetID(newState)
       date = newState.year
@@ -140,24 +111,24 @@ export default function globalReducer(state = helperFunctions.copy(initialState.
       window.localStorage.setItem('appData', JSON.stringify(newState))
       return newState;
 
-    case CHANGE_CUSTOMER_PROPERTY:
+    case types.CHANGE_CUSTOMER_PROPERTY:
       newState = objectAssign({}, state);
       newState.newCustomer.properties[action.name] = action.value
       return newState
 
-    case RECEIVE_SCOUT:
+    case types.RECEIVE_SCOUT:
       newState = objectAssign({}, state)
       let newScouts = action.scouts.map(scout => (objectAssign({}, scout, {name: helperFunctions.decodeStr(scout.name)})))
       newState.scoutList = newScouts
       window.localStorage.setItem('appData', JSON.stringify(newState))
       return newState
 
-    case REQUEST_SCOUT_POST:
+    case types.REQUEST_SCOUT_POST:
       newState = objectAssign({}, state)
       newState.scoutPost.isWaiting = true
       return newState
 
-    case SCOUT_POST_RESULT:
+    case types.SCOUT_POST_RESULT:
       newState = objectAssign({}, state)
       newState.scoutPost.isWaiting = false
       if (!action.success) {
@@ -165,18 +136,24 @@ export default function globalReducer(state = helperFunctions.copy(initialState.
       }
       return newState
 
-    case ADD_LEAD:
+    case types.ADD_LEAD:
       newState = objectAssign({}, state)
       newState.scoutList = helperFunctions.updateScoutArray(newState, action.scoutID, 'customerIDs', action.custID)
       window.localStorage.setItem('appData', JSON.stringify(newState))
       return newState
 
-    case REQUEST_LEAD_POST:
+    case types.REMOVE_LEAD:
+      newState = objectAssign({}, state)
+      newState.scoutList = helperFunctions.removeLead(newState, action.scoutID, action.custID)
+      window.localStorage.setItem('appData', JSON.stringify(newState))
+      return newState
+
+    case types.REQUEST_LEAD_POST:
       newState = objectAssign({}, state)
       newState.scoutPost.requestingLeads = true
       return newState
 
-    case LEAD_POST_RESULT:
+    case types.LEAD_POST_RESULT:
       newState = objectAssign({}, state)
       newState.scoutPost.requestingLeads = false
       if (!action.success) {
@@ -187,36 +164,36 @@ export default function globalReducer(state = helperFunctions.copy(initialState.
     //-------------------------------------------------------
     //-------------------------------------------------------
     //Reducers for changing or adding customers
-    case CHANGE_STATIC_CUSTOMER_DATA:
+    case types.CHANGE_STATIC_CUSTOMER_DATA:
       newState = objectAssign({}, state)
       newState.newStaticCustomer[action.key] = action.name
       return newState
 
-    case ADD_NEW_STATIC_CUSTOMER:
+    case types.ADD_NEW_STATIC_CUSTOMER:
       newState = objectAssign({}, state)
       newState.customers = remove(newState.customers, newState.newStaticCustomer['Customer Name'])
       newState.customers.splice(0, 0, objectAssign({}, newState.newStaticCustomer))
       window.localStorage.setItem('appData', JSON.stringify(newState))
       return newState
 
-    case RESET_NEW_STATIC_CUSTOMER:
+    case types.RESET_NEW_STATIC_CUSTOMER:
       newState = objectAssign({}, state)
       newState.newStaticCustomer = helperFunctions.copy(initialState.appData.newStaticCustomer)
       window.localStorage.setItem('appData', JSON.stringify(newState))
       return newState
 
-    case RECEIVE_CUSTOMERS:
+    case types.RECEIVE_CUSTOMERS:
       newState = objectAssign({}, state)
       newState.customers = action.customers
       window.localStorage.setItem('appData', JSON.stringify(newState))
       return newState
 
-    case REQUEST_CUSTOMER_POST:
+    case types.REQUEST_CUSTOMER_POST:
       newState = objectAssign({}, state)
       newState.customerPost.isWaiting = true
       return newState
 
-    case CUSTOMER_POST_RESULT:
+    case types.CUSTOMER_POST_RESULT:
       newState = objectAssign({}, state)
       newState.customerPost.isWaiting = false
       if (!action.success) {
@@ -224,7 +201,7 @@ export default function globalReducer(state = helperFunctions.copy(initialState.
       }
       return newState
 
-    case GET_SCOUT_INFO:
+    case types.GET_SCOUT_INFO:
       newState = objectAssign({}, state)
       id = helperFunctions.findCurrentSheetID(newState, action.name, newState.year)
       newState.newScout = objectAssign({}, newState.sheets[id], {name: action.name}) || helperFunctions.copy(initialState.appData.newScout)
@@ -234,18 +211,18 @@ export default function globalReducer(state = helperFunctions.copy(initialState.
     //-------------------------------------------------------
     //Reducers for changing or adding salesheets
 
-    case RECEIVE_SALESHEETS:
+    case types.RECEIVE_SALESHEETS:
       newState = objectAssign({}, state)
       newState.sheets = helperFunctions.postParseSheets(action.sheets)
       window.localStorage.setItem('appData', JSON.stringify(newState))
       return newState
 
-    case REQUEST_SHEET_POST:
+    case types.REQUEST_SHEET_POST:
       newState = objectAssign({}, state)
       newState.sheetPost.isWaiting = true
       return newState
 
-    case SHEET_POST_RESULT:
+    case types.SHEET_POST_RESULT:
       newState = objectAssign({}, state)
       newState.sheetPost.isWaiting = false
       if (!action.success) {
@@ -257,12 +234,12 @@ export default function globalReducer(state = helperFunctions.copy(initialState.
     //-------------------------------------------------------
     //Reducers for authentication
 
-    case POPULATE_A0_USER:
+    case types.POPULATE_A0_USER:
       newState = objectAssign({}, state)
       newState.newUserData = action.user
       return newState
 
-    case CHANGE_A0_USER:
+    case types.CHANGE_A0_USER:
       newState = objectAssign({}, state)
       if (newState.newUserData[action.field]) {
         newState.newUserData[action.field] = action.val

@@ -17,7 +17,7 @@ export const CustomerAssignmentPage = (props) => {
   return (
     <div>
       {ordered.map(scout => (
-        <ScoutAssignmentsCell appData={props.appData} scout={scout} onChange={props.actions.addLead} />
+        <ScoutAssignmentsCell appData={props.appData} scout={scout} onChange={props.actions.addLead} onPress={props.actions.removeLead} />
       ))}
     </div>
   )

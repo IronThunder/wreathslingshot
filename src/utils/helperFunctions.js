@@ -158,6 +158,20 @@ export default class helperFunctions {
     return result
   }
 
+  static removeLead (state, id, val) {
+    let result = state.scoutList
+    result.map(scout => {
+      if (scout.id === id) {
+        for(var i = scout.customerIDs.length - 1; i >= 0; i--) {
+          if(scout.customerIDs === val) {
+            scout.customerIDs.splice(i, 1);
+          }
+        }
+      }
+    })
+    return result
+  }
+
   static generateSheetID (state) {
     const ids = Object.keys(state.sheets).map(str => (parseInt(str)))
     return Math.max(...ids) + 1
@@ -278,7 +292,7 @@ export default class helperFunctions {
   }
 
   static decodeStr (str) {
-    return encodeURI(str.split('+').join(' ').split('^p^').join('.'))
+    return str.split('+').join(' ').split('^p^').join('.')
   }
 
 }
