@@ -3,9 +3,12 @@
 import {
   receiveCustomers,
   receiveScouts,
-  receiveSalesheets
+  receiveSalesheets,
+  receiveUser,
+  receiveProducts
 } from './actions/appActions';
 import React from 'react';
+import helperFunctions from './utils/helperFunctions'
 import {render} from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
@@ -16,17 +19,26 @@ import './styles/styles.scss'; // Yep, that's right. You can import SASS/CSS fil
 import { syncHistoryWithStore } from 'react-router-redux';
 import fetch from 'isomorphic-fetch';
 import { jwt } from './constants/env';
+import url from './constants/url'
+
+
 
 const store = configureStore();
-fetch(`http://powerful-sea-27631.herokuapp.com/customers`, {headers: {'Authorization': 'JWT ' + jwt}})
+fetch(url + `/customers`, {headers: {'Authorization': 'JWT ' + jwt}})
     .then(response => response.json())
     .then(json => store.dispatch(receiveCustomers(json)))
-fetch(`http://powerful-sea-27631.herokuapp.com/scouts`, {headers: {'Authorization': 'JWT ' + jwt}})
+fetch(url + `/scouts`, {headers: {'Authorization': 'JWT ' + jwt}})
   .then(response => response.json())
   .then(json => store.dispatch(receiveScouts(json)))
-fetch(`http://powerful-sea-27631.herokuapp.com/sheets`, {headers: {'Authorization': 'JWT ' + jwt}})
+fetch(url + `/sheets`, {headers: {'Authorization': 'JWT ' + jwt}})
   .then(response => response.json())
   .then(json => store.dispatch(receiveSalesheets(json)))
+fetch(url + `/users`, {headers: {'Authorization': 'JWT ' + jwt}})
+  .then(response => response.json())
+  .then(json => store.dispatch(receiveUser(helperFunctions.getStats(JSON.parse(localStorage.profile).email, json))))
+fetch(url + `/products`, {headers: {'Authorization': 'JWT ' + jwt}})
+  .then(response => response.json())
+  .then(json => store.dispatch(receiveProducts(json)))
 
 // Create an enhanced history that syncs navigation events with the store
 const history = syncHistoryWithStore(browserHistory, store);

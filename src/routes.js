@@ -10,6 +10,7 @@ import NotFoundPage from './components/NotFoundPage.js';
 import AddPage from './containers/AddPage.js'
 import CustomerViewPage from './containers/CustomerViewPage'
 import CustomerAssignmentPage from './containers/CustomerAssignmentPage'
+import PricingDataPage from './containers/PricingDataPage'
 import Login from './components/Login'
 import LoginRequiredPage from './containers/LoginRequiredPage'
 import LogoutPage from './components/LogoutPage'
@@ -33,6 +34,7 @@ export default (
     <Route path="edit" component={AddPage} onEnter={requireAuth}/>
     <Route path="customers" component={CustomerViewPage} onEnter={requireAuth}/>
     <Route path="leads" component={CustomerAssignmentPage} onEnter={requireAuth}/>
+    <Route path="products" component={PricingDataPage} onEnter={requireAuth}/>
     <Route path="login" component={LoginRequiredPage} />
     <Route path="logout" component={LogoutPage} />
     <Route path="*" component={NotFoundPage}/>

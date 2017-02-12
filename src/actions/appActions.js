@@ -29,6 +29,10 @@ export function addCustomer() {
   return {type: types.ADD_CUSTOMER}
 }
 
+export function deleteCustomer(id) {
+  return {type: types.DELETE_CUSTOMER, id}
+}
+
 export function changeNewCustomer(name) {
   return {type: types.CHANGE_CUSTOMER_NAME, name}
 }
@@ -45,6 +49,10 @@ export function addNewStaticCustomer() {
   return {type: types.ADD_NEW_STATIC_CUSTOMER}
 }
 
+export function addNewStaticCustomerLead() {
+  return {type: types.ADD_NEW_STATIC_CUSTOMER_LEADS}
+}
+
 export function getScoutInfo (name) {
   return {type: types.GET_SCOUT_INFO, name}
 }
@@ -59,6 +67,32 @@ export function addLead (custID, scoutID) {
 
 export function removeLead (custID, scoutID) {
   return {type: types.REMOVE_LEAD, custID, scoutID}
+}
+
+/////////////////Products///////////////////////////////////////////////////////
+
+export function receiveProducts(products) {
+  return {type: types.RECEIVE_PRODUCTS, products}
+}
+
+export function changeProductCost(name, cost) {
+  return {type: types.CHANGE_PRODUCT_COST, name, cost}
+}
+
+export function removeProduct(name) {
+  return {type: types.REMOVE_PRODUCT, name}
+}
+
+export function changeNewProductName(name) {
+  return {type: types.CHANGE_NEW_PRODUCT_NAME, name}
+}
+
+export function changeNewProductCost(name, cost) {
+  return {type: types.CHANGE_NEW_PRODUCT_COST, cost}
+}
+
+export function pushNewProduct () {
+  return {type: types.PUSH_NEW_PRODUCT}
 }
 
 /////////////////Asynchronous Customer Actions//////////////////////////////////
@@ -126,6 +160,15 @@ export function receiveSalesheets (json) {
   }
 }
 
+// /////////////////Asynchronous User Actions//////////////////////////////////
+export function receiveUser (json, email) {
+  return {
+    type: types.RECEIVE_USER,
+    name: json.name,
+    superuser: json.superuser,
+    receivedAt: Date.now()
+  }
+}
 
 /////////////////////Authentication Actions//////////////////////////////////////
 
@@ -137,6 +180,15 @@ export function changeA0User (field, val) {
   return {type: types.CHANGE_NEW_USER, field, val}
 }
 
+
+// /////////////////Asynchronous User Actions//////////////////////////////////
+export function makeLoading () {
+  return {type: types.MAKE_LOADING}
+}
+
+export function mount () {
+  return {type: types.MOUNT}
+}
 
 // export function requestScout (id) {
 //   return {type: types.REQUEST_SCOUT, id}

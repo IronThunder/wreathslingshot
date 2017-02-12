@@ -41,7 +41,7 @@ export default class helperFunctions {
         return products[i]
       }
     }
-    return undefined
+    throw new Error("Product " + name + " not found. Valid products are: " + products)
   }
 
   static updateProduct (products, name, amt) {
@@ -295,4 +295,34 @@ export default class helperFunctions {
     return str.split('+').join(' ').split('^p^').join('.')
   }
 
+  static getStats (email, list) {
+    let result = {email: email, name: 'Unknown', superuser: false}
+    list.map(entry => {
+      if (entry.email === email) {console.log(entry); result = entry}
+    })
+    return result
+  }
+
+  static getCustomers (superuser, scout, customers) {
+    if (superuser) return customers
+    let final = []
+    customers.map(cust => {
+      scout.customerIDs.map(id => {
+        if (id === cust._id){
+          final.push(cust)
+        }
+      })
+    })
+    return final
+  }
+
+  static removeCustomer(customers, custID){
+    let result = []
+    customers.map(cust => {
+      if (cust._id === custID) {
+        result.push(cust)
+      }
+    })
+    return result
+  }
 }

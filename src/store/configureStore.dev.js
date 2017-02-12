@@ -7,7 +7,9 @@ import thunkMiddleware from 'redux-thunk';
 import {
   postCustomer,
   postScout,
-  postLeads
+  postLeads,
+  postCustomerLead,
+  postProducts
 } from '../middleware/isomorphicPost'
 import rootReducer from '../reducers';
 
@@ -16,7 +18,7 @@ export default function configureStore(initialState) {
   let firstState =  initialState
 
   const store = createStore(rootReducer, {appData: firstState}, compose(
-    applyMiddleware(postCustomer, postScout, postLeads),
+    applyMiddleware(postCustomer, postScout, postLeads, postCustomerLead, postProducts),
     window.devToolsExtension ? window.devToolsExtension() : f => f // add support for Redux dev tools
     )
   );

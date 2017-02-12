@@ -176,6 +176,13 @@ export default function globalReducer(state = helperFunctions.copy(initialState.
       window.localStorage.setItem('appData', JSON.stringify(newState))
       return newState
 
+    case types.ADD_NEW_STATIC_CUSTOMER_LEADS:
+      newState = objectAssign({}, state)
+      newState.customers = remove(newState.customers, newState.newStaticCustomer['Customer Name'])
+      newState.customers.splice(0, 0, objectAssign({}, newState.newStaticCustomer))
+      window.localStorage.setItem('appData', JSON.stringify(newState))
+      return newState
+
     case types.RESET_NEW_STATIC_CUSTOMER:
       newState = objectAssign({}, state)
       newState.newStaticCustomer = helperFunctions.copy(initialState.appData.newStaticCustomer)
@@ -207,6 +214,13 @@ export default function globalReducer(state = helperFunctions.copy(initialState.
       newState.newScout = objectAssign({}, newState.sheets[id], {name: action.name}) || helperFunctions.copy(initialState.appData.newScout)
       return newState
 
+    case types.DELETE_CUSTOMER:
+      newState = objectAssign({}, state)
+      id = action.id
+      newState.customers = helperFunctions.removeCustomer(newState.customers, id)
+      window.localStorage.setItem('appData', JSON.stringify(newState))
+      return newState
+
     //-------------------------------------------------------
     //-------------------------------------------------------
     //Reducers for changing or adding salesheets
@@ -232,6 +246,59 @@ export default function globalReducer(state = helperFunctions.copy(initialState.
 
     //-------------------------------------------------------
     //-------------------------------------------------------
+    //Reducers for changing or adding users
+
+    case types.RECEIVE_USER:
+      newState = objectAssign({}, state)
+      newState.username = action.name
+      newState.superuser = action.superuser
+      window.localStorage.setItem('appData', JSON.stringify(newState))
+      return newState
+
+    //-------------------------------------------------------
+    //-------------------------------------------------------
+    //Reducers for changing or adding product data
+
+    case types.RECEIVE_PRODUCTS:
+      newState = objectAssign({}, state)
+      newState.types = {}
+      action.products.map(prod => {
+        newState.types[prod.name] = prod.cost
+      })
+      window.localStorage.setItem('appData', JSON.stringify(newState))
+      return newState
+
+    case types.CHANGE_PRODUCT_COST:
+      newState = objectAssign({}, state)
+      newState.types[action.name] = action.cost
+      window.localStorage.setItem('appData', JSON.stringify(newState))
+      return newState
+
+    case types.REMOVE_PRODUCT:
+      newState = objectAssign({}, state)
+      newState.productsToRemove.splice(0, 0, action.name)
+      delete newState[action.name]
+      window.localStorage.setItem('appData', JSON.stringify(newState))
+      return newState
+
+    case types.CHANGE_NEW_PRODUCT_NAME:
+      newState = objectAssign({}, state)
+      newState.newProduct.name = action.name
+      window.localStorage.setItem('appData', JSON.stringify(newState))
+      return newState
+
+    case types.CHANGE_NEW_PRODUCT_COST:
+      newState = objectAssign({}, state)
+      newState.newProduct.cost = action.cost
+      window.localStorage.setItem('appData', JSON.stringify(newState))
+      return newState
+
+    case types.PUSH_NEW_PRODUCT:
+      newState = objectAssign({}, state)
+      return newState
+
+    //-------------------------------------------------------
+    //-------------------------------------------------------
     //Reducers for authentication
 
     case types.POPULATE_A0_USER:
@@ -245,6 +312,21 @@ export default function globalReducer(state = helperFunctions.copy(initialState.
         newState.newUserData[action.field] = action.val
       }
       return newState
+
+    //-------------------------------------------------------
+    //-------------------------------------------------------
+    //Reducers for asynch
+
+    case types.MAKE_LOADING:
+      newState = objectAssign({}, state)
+      newState.loading = true
+      return newState
+
+    case types.MOUNT:
+      newState = objectAssign({}, state)
+      newState.loading = false
+      return newState
+
 
     default:
       return state;

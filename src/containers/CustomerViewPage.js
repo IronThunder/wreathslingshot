@@ -10,7 +10,7 @@ import CustomerViewTable from '../components/CustomerViewTable'
 export const CustomerViewPage = (props) => {
   return (
     <div>
-      <CustomerViewTable appData={props.appData} changeStaticCustomerData={props.actions.changeStaticCustomerData} addNewStaticCustomer={props.actions.addNewStaticCustomer}/>
+      <CustomerViewTable appData={props.appData} changeStaticCustomerData={props.actions.changeStaticCustomerData} addNewStaticCustomer={props.actions.addNewStaticCustomer} addNewStaticCustomerLead={props.actions.addNewStaticCustomerLead} deleteCustomer={props.actions.deleteCustomer}/>
     </div>
   )
 }

@@ -38,6 +38,75 @@ export const postCustomer = store => next => action => {
 
 
     return result
+  } else if (action.type === types.DELETE_CUSTOMER) {
+    let result = next(action)
+    let form = {id: action.id}
+    store.dispatch(actions.makeLoading())
+    fetch(url + `/customers`, {
+      method: 'DELETE',
+      body: JSON.stringify(form),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'JWT ' + jwt
+      }
+    })
+      .then(response => {
+        if (response.status >= 400){
+          store.dispatch(actions.customerPostResult(false, new Error("Bad response from server")))
+        } else {
+          fetch(url + `/customers`, {headers: {'Authorization': 'JWT ' + jwt}})
+            .then(response => response.json())
+            .then(json => {
+              store.dispatch(actions.receiveCustomers(json))
+              store.dispatch(actions.mount())
+            })
+        }
+      })
+  }
+  else {
+    return next(action)
+  }
+}
+
+export const postCustomerLead = store => next => action => {
+  if (action.type === types.ADD_NEW_STATIC_CUSTOMER_LEADS) {
+    let result = next(action)
+    let cust = {}
+    store.getState().appData.customerFields.map(field => {
+      cust = Object.assign({}, cust, {[field]: store.getState().appData.newStaticCustomer[field]})
+    })
+    const scout_id = action.scout_id
+    const form = {cust: cust, scout_id: scout_id}
+
+    store.dispatch(actions.makeLoading())
+
+    fetch(url + `/customers/addlead`, {
+      method: 'POST',
+      body: JSON.stringify(form),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'JWT ' + jwt
+      }
+    })
+      .then(response => {
+          if (response.status >= 400){
+            store.dispatch(actions.customerPostResult(false, new Error("Bad response from server")))
+          } else {
+            store.dispatch(actions.customerPostResult(true, null))
+            fetch(url + `/customers`, {headers: {'Authorization': 'JWT ' + jwt}})
+              .then(response => response.json())
+              .then(json => {
+                store.dispatch(actions.receiveCustomers(json))
+                store.dispatch(actions.mount())
+                location.reload()
+              })
+          }
+          store.dispatch(actions.resetNewCustomer())
+        }
+      )
+
+
+    return result
   } else {
     return next(action)
   }
@@ -160,6 +229,82 @@ export const postLeads = store => next => action => {
           fetch(url + `/scouts`, {headers: {'Authorization': 'JWT ' + jwt}})
             .then(response => response.json())
             .then(json => store.dispatch(actions.receiveScouts(json)))
+        }
+      })
+    return result
+  } else {
+    return next(action)
+  }
+}
+
+
+export const postProducts = store => next => action => {
+  if (action.type === types.PUSH_NEW_PRODUCT) {
+    let result = next(action)
+    const state = store.getState().appData
+    const newName = state.newProduct.name
+    const newCost = state.newProduct.cost
+    let forms = []
+    if (newName !== '' && newCost !== '') forms.splice(0, 0, {name: newName, cost: newCost})
+
+    store.dispatch(actions.makeLoading())
+
+    let counter = 0
+    forms.map(form => {
+      fetch(url + `/products`, {
+        method: 'PUT',
+        body: JSON.stringify(form),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'JWT ' + jwt
+        }
+      })
+        .then(response => {
+            if (response.status >= 400){
+              console.error('Failed to put on form ' + counter + '\n' + form)
+            } else {
+              counter += 1
+              if (counter === forms.length){
+                fetch(url + `/products`, {headers: {'Authorization': 'JWT ' + jwt}})
+                  .then(response => response.json())
+                  .then(json => {
+                    store.dispatch(actions.receiveProducts(json))
+                    store.dispatch(actions.mount())
+                  })
+              }
+            }
+          }
+        )
+    })
+
+
+    return result
+  } else if (action.type === types.REMOVE_PRODUCT) {
+    let result = next(action)
+    const state = store.getState()
+
+    const name = action.name
+    const form = {name: name}
+
+    store.dispatch(actions.makeLoading())
+
+    fetch(url + `/products`, {
+      method: 'DELETE',
+      body: JSON.stringify(form),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => {
+        if (response.status >= 400) {
+          console.error('Failed to delete product')
+        } else {
+          fetch(url + `/products`, {headers: {'Authorization': 'JWT ' + jwt}})
+            .then(response => response.json())
+            .then(json => {
+              store.dispatch(actions.receiveProducts(json))
+              store.dispatch(actions.mount())
+            })
         }
       })
     return result
